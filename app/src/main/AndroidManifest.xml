@@ -12,6 +12,12 @@
     <!-- 联网权限 -->
     <uses-permission android:name="android.permission.INTERNET" />
 
+    <!-- 蓝牙权限 -->
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
     <application
         android:name=".common.MyApplication"
         android:icon="@mipmap/ic_launcher"
@@ -20,19 +26,8 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:theme="@style/AppTheme">
 
-        <!-- 启动页面（因为使用了LauncherTheme，所以不要给这个Activity设置screenOrientation属性，会导致崩溃） -->
-        <activity
-            android:name=".ui.activity.LauncherActivity"
-            android:theme="@style/LauncherTheme">
-
-            <!-- 程序入口 -->
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-
+        <activity android:name=".activity.BluetoothActivity"
+            android:screenOrientation="landscape">
         </activity>
 
         <!-- 主页界面 -->
@@ -65,6 +60,18 @@
         <!-- 对话框使用案例界面 -->
         <activity android:name=".ui.activity.DialogActivity" />
 
+        <activity
+            android:name=".activity.MainActivity"
+            android:label="@string/title_activity_main"
+            android:theme="@style/AppTheme">
+            <!-- 程序入口 -->
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>
