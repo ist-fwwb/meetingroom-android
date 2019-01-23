@@ -2,6 +2,9 @@ package com.huangtao.meetingroom.activity;
 
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -10,14 +13,15 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.FrameLayout;
 
 import com.huangtao.meetingroom.R;
 import com.huangtao.meetingroom.common.Constants;
 import com.huangtao.meetingroom.common.MyActivity;
+import com.huangtao.meetingroom.fragment.MainFreeFragment;
 import com.huangtao.meetingroom.helper.CommonUtils;
 
 import java.io.IOException;
-import java.util.UUID;
 
 import butterknife.BindView;
 
@@ -28,6 +32,9 @@ public class MainActivity extends MyActivity
     Button open;
     @BindView(R.id.close)
     Button close;
+
+    @BindView(R.id.fragment_layout)
+    FrameLayout frameLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +88,11 @@ public class MainActivity extends MyActivity
                 CommonUtils.closeRelay();
             }
         });
+
+
+
+
+        switchFragment(MainFreeFragment.newInstance());
     }
 
     @Override
@@ -121,6 +133,13 @@ public class MainActivity extends MyActivity
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void switchFragment(Fragment fragment){
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.add(R.id.fragment_layout, fragment);
+        transaction.commit();
     }
 
     @Override

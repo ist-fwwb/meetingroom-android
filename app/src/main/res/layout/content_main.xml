@@ -11,7 +11,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:text="open"/>
+        android:text="open"
+        android:visibility="gone"/>
 
     <Button
         android:id="@+id/close"
@@ -19,6 +20,12 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:layout_below="@id/open"
-        android:text="close"/>
+        android:text="close"
+        android:visibility="gone"/>
+
+    <FrameLayout
+        android:id="@+id/fragment_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 
 </RelativeLayout>

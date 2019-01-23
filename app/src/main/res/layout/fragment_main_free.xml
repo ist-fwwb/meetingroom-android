@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragment.MainFreeFragment"
+    android:background="@color/white">
+
+    <RelativeLayout
+        android:id="@+id/list_container"
+        android:layout_width="250dp"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="40dp"
+        android:layout_marginBottom="40dp"
+        android:layout_marginRight="20dp"
+        android:background="@drawable/bg_home_list">
+
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+        </ListView>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="250dp"
+        android:layout_height="30dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="10dp"
+        android:layout_marginRight="20dp"
+        android:layout_alignParentRight="true">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:text="上次更新: 2019-01-23 19:31:25"
+            android:layout_centerVertical="true"
+            android:textSize="12sp"/>
+
+        <ImageView
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/ic_main_refresh"
+            android:layout_marginRight="5dp"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_toLeftOf="@id/list_container">
+
+        <TextView
+            android:id="@+id/meetingroom_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="软件学院5302"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="20dp"
+            android:textSize="18sp"
+            android:textColor="@color/douban_gray_55_percent"/>
+
+        <ImageView
+            android:id="@+id/qrcode"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_toRightOf="@id/meetingroom_name"
+            android:layout_alignTop="@id/meetingroom_name"
+            android:layout_marginLeft="10dp"
+            android:src="@mipmap/ic_qrcode"/>
+
+        <TextView
+            android:id="@+id/status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="空 闲"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="40dp"
+            android:layout_below="@id/meetingroom_name"
+            android:textSize="52sp"
+            android:textColor="@color/douban_green_80_percent"
+            android:textStyle="bold"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/status"
+            android:layout_marginTop="50dp"
+            android:orientation="horizontal"
+            android:layout_centerHorizontal="true">
+
+            <Button
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:text="开启"
+                android:background="@drawable/bg_home_open"
+                android:textColor="@color/white"
+                android:textSize="16sp"/>
+
+            <Button
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:text="临时预定"
+                android:background="@drawable/bg_home_order"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:layout_marginLeft="20dp"/>
+
+            <Button
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:text="嘉宾"
+                android:background="@drawable/bg_home_guest"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:layout_marginLeft="20dp"/>
+
+        </LinearLayout>
+    </RelativeLayout>
+
+</RelativeLayout>

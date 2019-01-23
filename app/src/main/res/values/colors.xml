@@ -11,4 +11,240 @@
     <color name="colorButtonDisable">#DDDDDD</color>
     <!-- 分割线的颜色 -->
     <color name="colorLine">#ECECEC</color>
+
+    <!-- 基础色系 -->
+    <color name="douban_green">#42bd56</color>
+    <color name="douban_green_80_percent">#68cb78</color>
+    <color name="douban_green_50_percent">#42BD56</color>
+    <color name="douban_green_10_percent_alpha">#3ba94d</color>
+
+    <color name="douban_yellow">#ffac2d</color>
+    <color name="douban_yellow_70_percent">#ffc46c</color>
+    <color name="douban_yellow_50_percent">#ffd596</color>
+
+    <color name="douban_red">#ff4055</color>
+    <color name="douban_red_80_percent">#ff6677</color>
+    <color name="douban_red_50_percent">#ff9faa</color>
+
+    <color name="douban_gray">#494949</color>
+    <color name="douban_gray_55_percent">#9b9b9b</color>
+    <color name="douban_gray_28_percent">#cccccc</color>
+    <color name="douban_gray_5_percent">#f6f6f6</color>
+    <color name="douban_gray_15_percent">#26cccccc</color>
+
+    <color name="douban_blue">#2384e8</color>
+    <color name="douban_blue_80_percent">#4f9ded</color>
+    <color name="douban_blue_40_percent">#83aeda</color>
+
+    <color name="white">#ffffff</color>
+    <color name="douban_white_40_percent">#66ffffff</color>
+    <color name="douban_white_50_percent">#7fffffff</color>
+
+    <color name="black">#000000</color>
+    <color name="black_transparent_75">#BF000000</color>
+    <color name="black_transparent_60">#99000000</color>
+    <color name="black_transparent_50">#80000000</color>
+    <color name="black_transparent_35">#5A000000</color>
+    <color name="black_transparent_20">#33000000</color>
+    <color name="black_transparent_15">#26000000</color>
+    <color name="black_transparent_10">#19000000</color>
+
+    <color name="white_transparent_70">#b2ffffff</color>
+    <color name="white_transparent_90">#e6ffffff</color>
+    <color name="white_transparent_50">#7fffffff</color>
+    <color name="white_transparent_20">#33ffffff</color>
+
+    <color name="douban_red_transparent_90">#E6FF4055</color>
+
+    <color name="douban_blue_transparent_90">#E62384e8</color>
+
+    <color name="tab_unselected_text_color">@color/douban_gray_55_percent</color>
+    <color name="tab_selected_text_color">@color/douban_green_80_percent</color>
+
+    <color name="color_darker_factor">#b2b2b2</color>
+
+    <color name="image_color_background">#F2F1EE</color>
+    <color name="seti_content_commet_people">#9DA6AD</color>
+    <color name="transparent">#00ffffff</color>
+    <drawable name="transparent">@color/transparent</drawable>
+    <drawable name="default_cover_background">@color/image_color_background</drawable>
+    <color name="background">#f2f1ee</color>
+    <drawable name="background">@color/background</drawable>
+    <color name="text_black">#000000</color>
+    <color name="text_black_light">#494949</color>
+    <color name="douban_gray_transparent_20">#33494949</color>
+    <color name="text_white">#ffffff</color>
+    <color name="text_gray_dark">#4f4f4f</color>
+    <color name="text_light">#4d4d4d</color>
+    <color name="text_gray">#999999</color>
+    <color name="text_gray_light">#cccccc</color>
+    <drawable name="white">@color/white</drawable>
+    <color name="search_pressed">#eecccccc</color>
+    <color name="search_background_white">#f7ffffff</color>
+    <color name="default_image_background">#f7f7f7</color>
+    <drawable name="default_background_cover">@color/default_image_background</drawable>
+
+    <color name="shadow_end_color">#03000000</color>
+    <color name="shadow_start_color">#37000000</color>
+
+    <color name="black_gray">#222222</color>
+    <color name="dark_gray">#4f4f4f</color>
+    <color name="medium_gray">#909090</color>
+    <color name="light_gray">#bcbcbc</color>
+    <color name="little_light_gray">#b3b3b3</color>
+    <color name="light_gray_translucence">#50bcbcbc</color>
+    <color name="vote_text_gray">#cccccc</color>
+    <color name="time_session_gray">#d8d8d8</color>
+    <color name="tag_item_bg_gray">#9b9b9b</color>
+    <color name="reshare_header_list">#4a4a4a</color>
+    <color name="x_light_gray">#f4f4f4</color>
+    <color name="group_shortcut_dialog_background">#f6f6f6</color>
+    <color name="circle_avatar_stroke_color">#1a000000</color>
+
+    <drawable name="douban_green">@color/douban_green</drawable>
+
+    <color name="dark_green">@color/douban_green</color>
+    <color name="guide_green">@color/douban_green</color>
+    <color name="light_green">#62cc75</color>
+
+    <color name="actionbar_background">#312d2d</color>
+    <color name="statusbar_background">#1e1c1c</color>
+    <color name="transparent_actionbar_background">#1e312d2d</color>
+
+    <color name="notice_orange">#ff8852</color>
+    <color name="group_edit_notice_orange">#80fa5b08</color>
+
+    <color name="orange">#ff8859</color>
+    <color name="dark_orange">#ff9faa</color>
+
+    <color name="light_black">#77555555</color>
+
+    <color name="emoji_board_bg">#f2f2f2</color>
+    <color name="emoji_page_indicator_color">#d3d3d3</color>
+    <color name="emoji_page_indicator_fill_color">#979797</color>
+
+    <color name="ten_percent_black">#1a000000</color>
+    <color name="twenty_percent_black">#33000000</color>
+    <color name="twenty_five_percent_black">#40000000</color>
+    <color name="thirty_percent_black">#4d000000</color>
+    <color name="forty_percent_black">#66000000</color>
+    <color name="eighty_percent_black">#cc000000</color>
+
+    <color name="chat_invite_add_bg">#f9f9f9</color>
+    <color name="chat_user_stroke">#e3e3e3</color>
+    <color name="chat_admin_apply">#bfbfbf</color>
+
+    <color name="doulist_selected">#F6F6F6</color>
+
+    <color name="divider_color">#DFDFDF</color>
+    <color name="translucence">#66000000</color>
+
+    <color name="related_dou_list_bg">#e7e7e7</color>
+    <!--photo-->
+    <color name="photo_dou_list_translucence_bg">#66000000</color>
+    <color name="photo_dou_list_default_bg">@color/douban_green</color>
+    <color name="photo_dou_list_follow_text">#99ffffff</color>
+
+    <color name="feed_book_bg">#f5f5f5</color>
+
+    <color name="pressed_color">#80F2F1EE</color>
+
+
+    <!--status notification-->
+    <color name="square_bg">#e9e8e7</color>
+    <color name="dou_list_abstracts_background">#57AF80</color>
+    <drawable name="dou_list_abstracts_background">@color/dou_list_abstracts_background</drawable>
+
+    <color name="btn_doulist_tag_green">#54c98b</color>
+
+    <color name="divider_line_bg">#e5e5e5</color>
+    <color name="dou_list_item_liker_text_color">#494949</color>
+    <color name="dou_list_item_comment_text_color">#979797</color>
+    <color name="status_send_bar_bj">#ECECEC</color>
+    <color name="action_mode_style_color">#003D50</color>
+    <color name="album_border_gray">#d8d8d8</color>
+
+    <color name="chat_image_overlay">#66000000</color>
+    <color name="album_author_name_color">#494949</color>
+    <color name="upload_photo_album_name_color">#4b4b4b</color>
+    <color name="status_card_bg">#F4F4F4</color>
+
+    <color name="book_movie_online_source_tip_bg">#f5a623</color>
+
+    <color name="subject_wish_btn_gray">#9B9B9B</color>
+
+    <color name="splash_text_color">#676767</color>
+    <color name="splash_bottom_text_color">#525252</color>
+
+    <color name="search_people_interest_tv">#9E9EEB</color>
+    <color name="search_people_interest_book">#71CF6A</color>
+    <color name="search_people_interest_music">#FFB269</color>
+    <color name="search_people_interest_group">#63D1B9</color>
+    <color name="search_people_profile_title_color">#A7A7A7</color>
+    <color name="search_people_select_tag_color">#4A4A4A</color>
+    <color name="search_people_green_color">#10C477</color>
+    <color name="search_people_button_bar_background">#33F0F0F0</color>
+
+    <color name="subject_tag_fill">#1BCD6E</color>
+    <color name="dou_list_add_divider_line_bg">#CECECE</color>
+    <color name="dou_list_add_title">#00C55D</color>
+    <color name="subject_movie_buy_ticket">#ff6960</color>
+
+    <color name="subject_tag_empty">#B5E3CB</color>
+    <color name="auto_complete_item_name">#444444</color>
+    <color name="auto_complete_item_remark">#c0c0c0</color>
+
+
+    <color name="owner_exit_group_chat_color">#ff5b4a</color>
+    <color name="apply_group_chat_status_background">#fcf8e9</color>
+
+    <color name="note_author_bg">#f6f6f6</color>
+
+    <color name="check_upgrade_button_border">#B2E0C5</color>
+    <color name="check_upgrate_button_fill_normal">@color/transparent</color>
+    <color name="check_upgrade_button_fill_focus">#E2EDE5</color>
+    <color name="check_upgrade_dialog_text_green">#54C990</color>
+    <color name="check_upgrade_dialog_text_black">#010000</color>
+
+    <color name="chat_system_text_color">#DDD</color>
+
+    <color name="action_menu_text_color">@color/douban_green</color>
+    <color name="action_menu_text_color_inactive">@color/douban_green_80_percent</color>
+
+    <!-- all inside notifications-->
+    <color name="notificaton_unread_background">#ecf8ee</color>
+
+    <color name="bg_subject_tag_filter_pressed">#f0f0f0</color>
+    <color name="bg_subject_tag_input">#f2f2f2</color>
+    <color name="subject_tag_input_border">#dcdcdc</color>
+
+    <!-- Recommend Feed -->
+    <color name="feed_recommend_more">#2FD07A</color>
+    <color name="feed_recommend_footer_text">#9B9B9B</color>
+    <color name="text_feed_recommend_read">#9B9B9B</color>
+    <color name="recommend_feed_date_background_orange">#FFAC2D</color>
+    <color name="recommend_feed_date_divider">#EFA02A</color>
+    <color name="recommend_feed_date_month">#A46D18</color>
+    <color name="recommend_feed_author">#EBC6B1</color>
+    <color name="recommend_feed_image_background">#f5f5f5</color>
+    <color name="recommend_feed_ad_source_text">#FFB2BB</color>
+
+    <!-- Subject Vendor -->
+    <color name="movie_vendor_vedio_default_background">#2E2E2E</color>
+    <color name="movie_vendor_trailer_background">#DDDDDD</color>
+    <color name="vendor_labels_color">#F5A623</color>
+
+    <color name="subject_discussion_background">#D3C9C0</color>
+    <color name="seti_content_header_background">#f9f8f7</color>
+    <color name="seti_guide_header">#CF6000</color>
+    <color name="seti_guide_title_1">#E48715</color>
+    <color name="seti_guide_title_2">#D54EAF</color>
+
+    <!-- User Tags -->
+    <color name="user_tag_title">#31A949</color>
+    <color name="user_tag_sub_title">@color/douban_gray_55_percent</color>
+
+    <!-- Group -->
+    <color name="group_requests_background">#FFF7E4</color>
+    <color name="group_requests_text">#F39700</color>
 </resources>
