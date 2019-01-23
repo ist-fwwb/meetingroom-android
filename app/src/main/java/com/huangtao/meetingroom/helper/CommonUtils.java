@@ -4,6 +4,7 @@ import com.huangtao.meetingroom.common.Constants;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.UUID;
 
 public class CommonUtils {
 
@@ -24,7 +25,7 @@ public class CommonUtils {
             try {
                 OutputStream os = Constants.bluetoothSocket.getOutputStream();
                 os.write(CommonUtils.getHexBytes(Constants.BLUETOOTH_OPEN));
-                os.close();
+                //os.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -36,7 +37,19 @@ public class CommonUtils {
             try {
                 OutputStream os = Constants.bluetoothSocket.getOutputStream();
                 os.write(CommonUtils.getHexBytes(Constants.BLUETOOTH_CLOSE));
-                os.close();
+                //os.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public static void connectRelay() {
+        if(Constants.bluetoothDevice != null){
+            try {
+                Constants.bluetoothSocket = Constants.bluetoothDevice.createRfcommSocketToServiceRecord(UUID.fromString(Constants.SPP_UUID));
+                if (Constants.bluetoothSocket != null)
+                    Constants.bluetoothSocket.connect();
             } catch (IOException e) {
                 e.printStackTrace();
             }

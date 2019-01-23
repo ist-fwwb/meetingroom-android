@@ -22,6 +22,7 @@ import com.huangtao.meetingroom.R;
 import com.huangtao.meetingroom.adapter.BluetoothListAdapter;
 import com.huangtao.meetingroom.common.Constants;
 import com.huangtao.meetingroom.common.MyActivity;
+import com.huangtao.meetingroom.helper.CommonUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -77,19 +78,12 @@ public class BluetoothActivity extends MyActivity {
                 if(mBluetoothAdapter.isDiscovering()){
                     mBluetoothAdapter.cancelDiscovery();
                 }
-                BluetoothDevice device = bluetooths.get(position);
-                UUID uuid = UUID.fromString(Constants.SPP_UUID);
-                try {
-                    Constants.bluetoothSocket = device.createRfcommSocketToServiceRecord(uuid);
-                    toast("开始连接…");
-                    if (Constants.bluetoothSocket != null) {
-                        Constants.bluetoothSocket.connect();
-                        toast("连接成功");
-                        finish();
-                    }
-                } catch (IOException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
+                Constants.bluetoothDevice = bluetooths.get(position);
+                toast("开始连接…");
+                CommonUtils.connectRelay();
+                if (Constants.bluetoothSocket != null && Constants.bluetoothSocket.isConnected()) {
+                    toast("连接成功");
+                    finish();
                 }
             }
         });

@@ -17,6 +17,7 @@ import com.huangtao.meetingroom.common.MyActivity;
 import com.huangtao.meetingroom.helper.CommonUtils;
 
 import java.io.IOException;
+import java.util.UUID;
 
 import butterknife.BindView;
 
@@ -59,9 +60,11 @@ public class MainActivity extends MyActivity
         open.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(Constants.bluetoothSocket == null || !Constants.bluetoothSocket.isConnected()){
+                if(Constants.bluetoothSocket == null){
                     toast("蓝牙未连接");
                     return;
+                } else if(!Constants.bluetoothSocket.isConnected()){
+                    CommonUtils.connectRelay();
                 }
                 CommonUtils.openRelay();
             }
@@ -70,9 +73,10 @@ public class MainActivity extends MyActivity
         close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(Constants.bluetoothSocket == null || !Constants.bluetoothSocket.isConnected()){
+                if(Constants.bluetoothSocket == null){
                     toast("蓝牙未连接");
-                    return;
+                } else if(!Constants.bluetoothSocket.isConnected()){
+                    CommonUtils.connectRelay();
                 }
                 CommonUtils.closeRelay();
             }
