@@ -2,6 +2,9 @@ package com.huangtao.meetingroom.common;
 
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
+import android.os.Environment;
+
+import java.io.File;
 
 public class Constants {
 
@@ -14,6 +17,8 @@ public class Constants {
     // arcsoft
     public static final String APP_ID = "F1vNFhZAoVSdhNXaCzpLvBvcMW9aeqH6e68aSH5GUB3C";
     public static final String SDK_KEY = "7Lq9LdfNhCJxkw4zbBPk2hBz3KhbiuBSXhy3sGq3EogE";
+    public static String HEAD_DIR = Environment.getExternalStorageDirectory().getAbsolutePath()
+            + File.separator + "meeting" + File.separator + "head" + File.separator;
 
     // ali oss
     public static final String OSS_AccessKeyId = "LTAIqMIT5KX4oGAT";
@@ -23,4 +28,7 @@ public class Constants {
     public static final String OSS_DIR_FEATURE = "face-feature-file";
     public static final String OSS_endpoint = "http://oss-cn-shanghai.aliyuncs.com";
     public static final String OSS_AUTH_SERVER = "http://129.211.119.51:7080/";
+
+    //meetingRoom id
+    public static final String ROOM_ID = "5c40608a863baf00137aeeb6";
 }

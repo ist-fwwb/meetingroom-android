@@ -8,6 +8,7 @@ import android.view.animation.ScaleAnimation;
 
 import com.gyf.barlibrary.BarHide;
 import com.huangtao.meetingroom.R;
+import com.huangtao.meetingroom.activity.MainActivity;
 import com.huangtao.meetingroom.common.MyActivity;
 import com.hjq.permissions.OnPermission;
 import com.hjq.permissions.Permission;
@@ -91,7 +92,7 @@ public class LauncherActivity extends MyActivity
 
     @Override
     public void hasPermission(List<String> granted, boolean isAll) {
-        startActivity(HomeActivity.class);
+        startActivity(MainActivity.class);
         finish();
     }
 

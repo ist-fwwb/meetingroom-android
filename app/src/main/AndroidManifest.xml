@@ -64,11 +64,20 @@
             android:name=".activity.MainActivity"
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme">
+        </activity>
+        <activity
+            android:name=".arcsoft.MultiImageActivity"
+            android:label="@string/title_activity_main"
+            android:theme="@style/AppTheme">
+        </activity>
+        <activity
+            android:name=".ui.activity.LauncherActivity"
+            android:label="@string/title_activity_main"
+            android:theme="@style/AppTheme">
             <!-- 程序入口 -->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.VIEW" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
