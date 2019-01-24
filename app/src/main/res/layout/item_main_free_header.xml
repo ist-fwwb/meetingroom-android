@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:background="@color/douban_gray_15_percent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="今日安排"
+            android:textColor="@color/douban_gray_55_percent"
+            android:textSize="14sp"
+            android:layout_marginLeft="5dp"/>
+
+    </RelativeLayout>
+
+</LinearLayout>

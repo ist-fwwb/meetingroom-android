@@ -56,4 +56,10 @@ public class CommonUtils {
         }
     }
 
+    public static String getFormatTime(int start, int end) {
+        String first = start / 2 + ":" + ((start + 1) % 2 == 0 ? "30" : "00");
+        String last = end / 2 + ":" + ((end + 1) % 2 == 0 ? "30" : "00");
+        return first + " - " + last;
+    }
+
 }

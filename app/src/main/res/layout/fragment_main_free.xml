@@ -6,24 +6,27 @@
     tools:context=".fragment.MainFreeFragment"
     android:background="@color/white">
 
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/list_container"
         android:layout_width="250dp"
         android:layout_height="match_parent"
         android:layout_alignParentRight="true"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="10dp"
         android:layout_marginBottom="40dp"
         android:layout_marginRight="20dp"
         android:background="@drawable/bg_home_list">
 
         <ListView
+            android:id="@+id/list"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-
+            android:layout_height="match_parent"
+            android:paddingLeft="1dp"
+            android:paddingRight="1dp"
+            android:paddingTop="1dp"
+            android:paddingBottom="1dp">
         </ListView>
 
-    </RelativeLayout>
+    </LinearLayout>
 
     <RelativeLayout
         android:layout_width="250dp"
@@ -34,6 +37,7 @@
         android:layout_alignParentRight="true">
 
         <TextView
+            android:id="@+id/list_refresh_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
@@ -42,6 +46,7 @@
             android:textSize="12sp"/>
 
         <ImageView
+            android:id="@+id/list_refresh"
             android:layout_width="22dp"
             android:layout_height="22dp"
             android:layout_alignParentRight="true"
@@ -64,7 +69,18 @@
             android:layout_marginLeft="20dp"
             android:layout_marginTop="20dp"
             android:textSize="18sp"
-            android:textColor="@color/douban_gray_55_percent"/>
+            android:textColor="@color/douban_gray"/>
+
+        <TextClock
+            android:id="@+id/time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/meetingroom_name"
+            android:layout_alignLeft="@id/meetingroom_name"
+            android:textSize="13sp"
+            android:textColor="@color/douban_gray_55_percent"
+            android:format12Hour="yyyy-MM-dd HH:mm:ss"
+            android:format24Hour="yyyy-MM-dd HH:mm:ss"/>
 
         <ImageView
             android:id="@+id/qrcode"
@@ -72,7 +88,7 @@
             android:layout_height="30dp"
             android:layout_toRightOf="@id/meetingroom_name"
             android:layout_alignTop="@id/meetingroom_name"
-            android:layout_marginLeft="10dp"
+            android:layout_marginLeft="20dp"
             android:src="@mipmap/ic_qrcode"/>
 
         <TextView
@@ -84,7 +100,7 @@
             android:layout_marginTop="40dp"
             android:layout_below="@id/meetingroom_name"
             android:textSize="52sp"
-            android:textColor="@color/douban_green_80_percent"
+            android:textColor="@color/douban_green"
             android:textStyle="bold"/>
 
         <LinearLayout
