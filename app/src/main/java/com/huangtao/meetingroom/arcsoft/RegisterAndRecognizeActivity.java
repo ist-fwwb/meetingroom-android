@@ -187,21 +187,21 @@ public class RegisterAndRecognizeActivity extends AppCompatActivity implements V
                     @Override
                     public void onNext(Integer activeCode) {
                         if (activeCode == ErrorInfo.MOK) {
-                            Toast.makeText(RegisterAndRecognizeActivity.this, "激活成功", Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(RegisterAndRecognizeActivity.this, "激活成功", Toast.LENGTH_SHORT).show();
                             initEngine();
                             initCamera();
                             if (cameraHelper != null) {
                                 cameraHelper.start();
                             }
                         } else if (activeCode == ErrorInfo.MERR_ASF_ALREADY_ACTIVATED) {
-                            Toast.makeText(RegisterAndRecognizeActivity.this, "已经激活", Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(RegisterAndRecognizeActivity.this, "已经激活", Toast.LENGTH_SHORT).show();
                             initEngine();
                             initCamera();
                             if (cameraHelper != null) {
                                 cameraHelper.start();
                             }
                         } else {
-                            Toast.makeText(RegisterAndRecognizeActivity.this, "激活失败 " + activeCode, Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(RegisterAndRecognizeActivity.this, "激活失败 " + activeCode, Toast.LENGTH_SHORT).show();
                         }
                     }
 
@@ -393,14 +393,17 @@ public class RegisterAndRecognizeActivity extends AppCompatActivity implements V
                                         FaceFeature faceFeature = new FaceFeature();
                                         faceFeature.setFeatureData(CommonUtils.getBytes(FaceServer.SAVE_FEATURE_DIR + File.separator + "register"));
                                         CompareResult compareResult = FaceServer.getInstance().getTopOfFaceLib(faceFeature);
-                                        if (compareResult.getSimilar() > SIMILAR_THRESHOLD) {
+                                        Log.v(TAG, compareResult.getSimilar() + "");
+                                        if (compareResult.getSimilar() >= SIMILAR_THRESHOLD) {
+                                            Log.v(TAG, compareResult.getUserName());
                                             Intent intent = new Intent();
-                                            intent.putExtra("result", true);
-                                            intent.putExtra("faceName", "a");
+                                            intent.putExtra("faceName", compareResult.getUserName());
                                             setResult(RESULT_OK, intent);
                                         }
                                         else {
-                                            setResult(RESULT_CANCELED);
+                                            Log.v(TAG, compareResult.getUserName());
+                                            Intent intent = new Intent();
+                                            setResult(RESULT_CANCELED, intent);
                                         }
                                         finish();
                                     }

@@ -182,7 +182,7 @@ public class MainFreeFragment extends MyLazyFragment {
 
             @Override
             public void onFailure(Call<List<User>> call, Throwable t) {
-                toast("参与者人脸信息拉取失败here");
+                toast("参与者人脸信息拉取失败");
             }
         });
     }
@@ -192,8 +192,8 @@ public class MainFreeFragment extends MyLazyFragment {
         @Override
         public void handleMessage(Message msg) {
             progressDialog.dismiss();
-            toast("拉取成功");
-            startActivityForResult(new Intent(getActivity(), RegisterAndRecognizeActivity.class), 1);
+            //toast("拉取成功");
+            startActivityForResult(new Intent(getActivity(), RegisterAndRecognizeActivity.class), 0);
         }
     }
 }

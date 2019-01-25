@@ -126,6 +126,7 @@ public class FaceServer {
                 featureFiles.add(new File(Constants.HEAD_DIR + File.separator + faceName));
             }
             if (featureFiles.size() == 0) {
+                Log.v(TAG, "featureFile is empty");
                 return;
             }
             faceRegisterInfoList = new ArrayList<>();
