@@ -130,16 +130,16 @@ public class RegisterAndRecognizeActivity extends AppCompatActivity implements V
         getWindow().setAttributes(attributes);
 
         // Activity启动后就锁定为启动时的方向
-        switch (getResources().getConfiguration().orientation) {
-            case Configuration.ORIENTATION_PORTRAIT:
-                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-                break;
-            case Configuration.ORIENTATION_LANDSCAPE:
-                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-                break;
-            default:
-                break;
-        }
+//        switch (getResources().getConfiguration().orientation) {
+//            case Configuration.ORIENTATION_PORTRAIT:
+//                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+//                break;
+//            case Configuration.ORIENTATION_LANDSCAPE:
+//                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+//                break;
+//            default:
+//                break;
+//        }
         //本地人脸库初始化
         //TODO 通过meeting来进行初始化
         FaceServer.getInstance().init(this);
@@ -235,7 +235,7 @@ public class RegisterAndRecognizeActivity extends AppCompatActivity implements V
      */
     private void initEngine() {
         faceEngine = new FaceEngine();
-        afCode = faceEngine.init(this, FaceEngine.ASF_DETECT_MODE_VIDEO, ConfigUtil.getFtOrient(this),
+        afCode = faceEngine.init(this, FaceEngine.ASF_DETECT_MODE_VIDEO, FaceEngine.ASF_OP_0_ONLY,
                 16, MAX_DETECT_NUM, FaceEngine.ASF_FACE_RECOGNITION | FaceEngine.ASF_FACE_DETECT | FaceEngine.ASF_LIVENESS);
         VersionInfo versionInfo = new VersionInfo();
         faceEngine.getVersion(versionInfo);
