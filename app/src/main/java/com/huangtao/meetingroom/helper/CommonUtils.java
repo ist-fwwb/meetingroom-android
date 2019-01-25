@@ -80,6 +80,11 @@ public class CommonUtils {
         return sdf.format(new Date());
     }
 
+    public static String getTime(){
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+        return sdf.format(new Date());
+    }
+
     public static void saveSharedPreference(Context context, String key, String value){
         SharedPreferences sharedPreferences = context.getSharedPreferences("meeting", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();

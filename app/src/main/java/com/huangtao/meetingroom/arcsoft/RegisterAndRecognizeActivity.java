@@ -370,7 +370,6 @@ public class RegisterAndRecognizeActivity extends AppCompatActivity implements V
                     Observable.create(new ObservableOnSubscribe<Boolean>() {
                         @Override
                         public void subscribe(ObservableEmitter<Boolean> emitter) {
-                            //TODO 修改register的开始条件，不需要通过点击按钮就可以改变status
                             boolean success = FaceServer.getInstance().register(RegisterAndRecognizeActivity.this, nv21.clone(), previewSize.width, previewSize.height, "register");
                             emitter.onNext(success);
                         }
@@ -389,23 +388,6 @@ public class RegisterAndRecognizeActivity extends AppCompatActivity implements V
 //                                    Toast.makeText(RegisterAndRecognizeActivity.this, result, Toast.LENGTH_SHORT).show();
                                     if(success){
                                         //Toast.makeText(RegisterAndRecognizeActivity.this, "人脸采集成功", Toast.LENGTH_SHORT).show();
-                                        //在这里进行人脸验证
-                                        FaceFeature faceFeature = new FaceFeature();
-                                        faceFeature.setFeatureData(CommonUtils.getBytes(FaceServer.SAVE_FEATURE_DIR + File.separator + "register"));
-                                        CompareResult compareResult = FaceServer.getInstance().getTopOfFaceLib(faceFeature);
-                                        Log.v(TAG, compareResult.getSimilar() + "");
-                                        if (compareResult.getSimilar() >= SIMILAR_THRESHOLD) {
-                                            Log.v(TAG, compareResult.getUserName());
-                                            Intent intent = new Intent();
-                                            intent.putExtra("faceName", compareResult.getUserName());
-                                            setResult(RESULT_OK, intent);
-                                        }
-                                        else {
-                                            Log.v(TAG, compareResult.getUserName());
-                                            Intent intent = new Intent();
-                                            setResult(RESULT_CANCELED, intent);
-                                        }
-                                        finish();
                                     }
                                     registerStatus = REGISTER_STATUS_DONE;
                                 }
@@ -560,35 +542,16 @@ public class RegisterAndRecognizeActivity extends AppCompatActivity implements V
 
 //                        Log.i(TAG, "onNext: fr search get result  = " + System.currentTimeMillis() + " trackId = " + requestId + "  similar = " + compareResult.getSimilar());
                         if (compareResult.getSimilar() > SIMILAR_THRESHOLD) {
-                            boolean isAdded = false;
-                            if (compareResultList == null) {
-                                requestFeatureStatusMap.put(requestId, RequestFeatureStatus.FAILED);
-                                faceHelper.addName(requestId, "VISITOR " + requestId);
-                                return;
+                            Log.v(TAG, compareResult.getUserName());
+                            Intent intent = new Intent();
+                            intent.putExtra("featureFileName", compareResult.getUserName());
+                            setResult(RESULT_OK, intent);
+                            finish();
                             }
-                            for (CompareResult compareResult1 : compareResultList) {
-                                if (compareResult1.getTrackId() == requestId) {
-                                    isAdded = true;
-                                    break;
-                                }
-                            }
-                            if (!isAdded) {
-                                //对于多人脸搜索，假如最大显示数量为 MAX_DETECT_NUM 且有新的人脸进入，则以队列的形式移除
-                                if (compareResultList.size() >= MAX_DETECT_NUM) {
-                                    compareResultList.remove(0);
-//                                    adapter.notifyItemRemoved(0);
-                                }
-                                //添加显示人员时，保存其trackId
-                                compareResult.setTrackId(requestId);
-                                compareResultList.add(compareResult);
-//                                adapter.notifyItemInserted(compareResultList.size() - 1);
-                            }
-                            requestFeatureStatusMap.put(requestId, RequestFeatureStatus.SUCCEED);
-                            faceHelper.addName(requestId, compareResult.getUserName());
-
-                        } else {
-                            requestFeatureStatusMap.put(requestId, RequestFeatureStatus.FAILED);
-                            faceHelper.addName(requestId, "VISITOR " + requestId);
+                         else {
+                            Intent intent = new Intent();
+                            setResult(RESULT_CANCELED);
+                            finish();
                         }
                     }
 
@@ -604,18 +567,6 @@ public class RegisterAndRecognizeActivity extends AppCompatActivity implements V
                 });
     }
 
-
-    /**
-     * 将准备注册的状态置为{@link #REGISTER_STATUS_READY}
-     *
-     * @param view 注册按钮
-     */
-    public void register(View view) {
-        Log.i("register", "register");
-        if (registerStatus == REGISTER_STATUS_DONE) {
-            registerStatus = REGISTER_STATUS_READY;
-        }
-    }
     /**
      * 在{@link #previewView}第一次布局完成后，去除该监听，并且进行引擎和相机的初始化
      */

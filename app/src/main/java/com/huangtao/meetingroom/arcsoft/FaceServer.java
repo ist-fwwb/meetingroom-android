@@ -126,9 +126,9 @@ public class FaceServer {
                 featureFiles.add(new File(Constants.HEAD_DIR + File.separator + faceName));
             }
             if (featureFiles.size() == 0) {
-                Log.v(TAG, "featureFile is empty");
                 return;
             }
+            Log.v(TAG, featureFiles.size() + "");
             faceRegisterInfoList = new ArrayList<>();
             for (File featureFile : featureFiles) {
                 try {
@@ -336,8 +336,10 @@ public class FaceServer {
     public CompareResult getTopOfFaceLib(FaceFeature faceFeature) {
         if (faceEngine == null || isProcessing || faceFeature == null || faceRegisterInfoList ==
                 null || faceRegisterInfoList.size() == 0) {
+            Log.v(TAG, "return null here");
             return null;
         }
+        Log.v(TAG, "in progress" + faceRegisterInfoList.size());
         FaceFeature tempFaceFeature = new FaceFeature();
         FaceSimilar faceSimilar = new FaceSimilar();
         float maxSimilar = 0;
@@ -356,6 +358,7 @@ public class FaceServer {
             return new CompareResult(faceRegisterInfoList.get(maxSimilarIndex).getName(),
                     maxSimilar);
         }
+        Log.v(TAG, "return null here");
         return null;
     }
 

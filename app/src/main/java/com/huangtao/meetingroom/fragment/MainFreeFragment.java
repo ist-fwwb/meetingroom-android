@@ -27,6 +27,7 @@ import com.huangtao.meetingroom.network.Network;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -50,6 +51,7 @@ public class MainFreeFragment extends MyLazyFragment {
     MeetingAdapter meetingAdapter;
 
     List<Meeting> meetings;
+    Meeting nextMeeting;
 
     public static MainFreeFragment newInstance() {
         return new MainFreeFragment();
@@ -92,30 +94,19 @@ public class MainFreeFragment extends MyLazyFragment {
         });
 
         startButton.setOnClickListener((v) ->{
-            Meeting meeting = nextMeeting(meetings);
-            if (meeting == null) {
+            nextMeeting = nextMeeting(meetings);
+            if (nextMeeting == null) {
                 toast("当前时间没有会议");
             }
             else {
                 //getActivity().getSupportFragmentManager().beginTransaction().
                 //        replace(R.id.fragment_layout, new MainBusyFragment(), null).commit();
-                CommonUtils.saveSharedPreference(getActivity(), "NextMeetingId", meeting.getId());
-                prepareFilesBeforeRecognize(meeting);
+                CommonUtils.saveSharedPreference(getActivity(), "NextMeetingId",nextMeeting.getId());
+                prepareFilesBeforeRecognize(nextMeeting);
             }
         });
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK){
-            //TODO 上传会议信息并跳转到开会中fragment
-            toast("人脸识别成功");
-        }
-        else {
-            toast("人脸识别失败");
-        }
-    }
 
     private void initList() {
         final TextView listRefreshTime = findViewById(R.id.list_refresh_time);
@@ -152,7 +143,7 @@ public class MainFreeFragment extends MyLazyFragment {
     private void prepareFilesBeforeRecognize(Meeting meeting){
         Map<String ,String> attendants = meeting.getAttendants();
         List<String> ids = new ArrayList<>(attendants.keySet());
-        Network.getInstance().queryUser(null, ids).enqueue(new Callback<List<User>>() {
+        Network.getInstance().queryUser(null, ids, null).enqueue(new Callback<List<User>>() {
             @Override
             public void onResponse(Call<List<User>> call, Response<List<User>> response) {
                 List<User> users = response.body();
@@ -194,6 +185,47 @@ public class MainFreeFragment extends MyLazyFragment {
             progressDialog.dismiss();
             //toast("拉取成功");
             startActivityForResult(new Intent(getActivity(), RegisterAndRecognizeActivity.class), 0);
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK){
+            //TODO 上传会议信息并跳转到开会中fragment
+            toast("人脸识别成功");
+            String faceFeatureFile = data.getStringExtra("faceFeatureFile");
+            Network.getInstance().queryUser(null, null, faceFeatureFile).enqueue(new Callback<List<User>>() {
+                @Override
+                public void onResponse(Call<List<User>> call, Response<List<User>> response) {
+                    String id = response.body().get(0).getId();
+                    nextMeeting.getAttendants().put(id, CommonUtils.getTime());
+                }
+
+                @Override
+                public void onFailure(Call<List<User>> call, Throwable t) {
+
+                }
+            });
+            Network.getInstance().modifyMeeting(nextMeeting).enqueue(new Callback<Meeting>() {
+                @Override
+                public void onResponse(Call<Meeting> call, Response<Meeting> response) {
+
+                }
+
+                @Override
+                public void onFailure(Call<Meeting> call, Throwable t) {
+
+                }
+            });
+            getActivity().getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_layout, new MainBusyFragment(), null)
+                    .addToBackStack(null)
+                    .commit();
+        }
+        else {
+            toast("人脸识别失败");
         }
     }
 }
