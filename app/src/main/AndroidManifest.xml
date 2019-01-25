@@ -65,8 +65,9 @@
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme">
         </activity>
+
         <activity
-            android:name=".arcsoft.MultiImageActivity"
+            android:name=".arcsoft.RegisterAndRecognizeActivity"
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme">
         </activity>

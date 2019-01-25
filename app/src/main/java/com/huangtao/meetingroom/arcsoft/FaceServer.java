@@ -14,6 +14,11 @@ import com.arcsoft.face.FaceEngine;
 import com.arcsoft.face.FaceFeature;
 import com.arcsoft.face.FaceInfo;
 import com.arcsoft.face.FaceSimilar;
+import com.huangtao.meetingroom.common.Constants;
+import com.huangtao.meetingroom.fragment.MainFreeFragment;
+import com.huangtao.meetingroom.helper.CommonUtils;
+import com.huangtao.meetingroom.model.Meeting;
+import com.huangtao.meetingroom.network.Network;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -21,6 +26,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * 人脸库操作类，包含注册和搜索
@@ -36,6 +45,7 @@ public class FaceServer {
             .getAbsolutePath() + File.separator + "meeting" + File.separator + "imgs";
     public static final String SAVE_FEATURE_DIR = Environment.getExternalStorageDirectory()
             .getAbsolutePath() + File.separator+ "meeting" + File.separator + "features";
+    private Meeting meeting;
 
     /**
      * 是否正在搜索人脸，保证搜索操作单线程进行
@@ -101,16 +111,21 @@ public class FaceServer {
      * @param context 上下文对象
      */
     private void initFaceList(Context context) {
+        //TODO 通过meeting来初始化FaceList
         synchronized (this) {
             if (ROOT_PATH == null) {
                 ROOT_PATH = context.getFilesDir().getAbsolutePath();
             }
-            File featureDir = new File(ROOT_PATH + File.separator + SAVE_FEATURE_DIR);
+            File featureDir = new File(Constants.HEAD_DIR);
             if (!featureDir.exists() || !featureDir.isDirectory()) {
                 return;
             }
-            File[] featureFiles = featureDir.listFiles();
-            if (featureFiles == null || featureFiles.length == 0) {
+            List<File> featureFiles = new ArrayList<>();
+            String[] faceNames = CommonUtils.getStringFromSharedPreference(context, "FaceNames").split(" ");
+            for (String faceName : faceNames){
+                featureFiles.add(new File(Constants.HEAD_DIR + File.separator + faceName));
+            }
+            if (featureFiles.size() == 0) {
                 return;
             }
             faceRegisterInfoList = new ArrayList<>();

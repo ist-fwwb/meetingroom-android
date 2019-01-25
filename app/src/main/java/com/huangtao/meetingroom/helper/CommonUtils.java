@@ -5,6 +5,10 @@ import android.content.SharedPreferences;
 
 import com.huangtao.meetingroom.common.Constants;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.text.DateFormat;
@@ -94,5 +98,31 @@ public class CommonUtils {
         int minutes = calendar.get(Calendar.MINUTE);
         int time = hour * 2 + minutes / 30;
         return time;
+    }
+
+    public static byte[] getBytes(String filePath){
+        File file = new File(filePath);
+        ByteArrayOutputStream out = null;
+        try {
+            FileInputStream in = new FileInputStream(file);
+            out = new ByteArrayOutputStream();
+            byte[] b = new byte[1024];
+            int i = 0;
+            while ((i = in.read(b)) != -1) {
+
+                out.write(b, 0, b.length);
+            }
+            out.close();
+            in.close();
+        } catch (FileNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        byte[] s = out.toByteArray();
+        return s;
+
     }
 }

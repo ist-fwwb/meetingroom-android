@@ -12,11 +12,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.TimeUtils;
-import com.huangtao.base.BaseActivity;
 import com.huangtao.meetingroom.R;
 import com.huangtao.meetingroom.activity.MainActivity;
 import com.huangtao.meetingroom.adapter.MeetingAdapter;
-import com.huangtao.meetingroom.arcsoft.MultiImageActivity;
+import com.huangtao.meetingroom.arcsoft.RegisterAndRecognizeActivity;
 import com.huangtao.meetingroom.common.Constants;
 import com.huangtao.meetingroom.common.MyLazyFragment;
 import com.huangtao.meetingroom.helper.CommonUtils;
@@ -28,15 +27,15 @@ import com.huangtao.meetingroom.network.Network;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Handler;
 
 import butterknife.BindView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import static android.app.Activity.RESULT_OK;
 
 public class MainFreeFragment extends MyLazyFragment {
 
@@ -109,8 +108,9 @@ public class MainFreeFragment extends MyLazyFragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == 0){
+        if (resultCode == RESULT_OK){
             //TODO 上传会议信息并跳转到开会中fragment
+            toast("人脸识别成功");
         }
         else {
             toast("人脸识别失败");
@@ -158,8 +158,10 @@ public class MainFreeFragment extends MyLazyFragment {
                 List<User> users = response.body();
                 progressDialog.show();
                 new Thread(()->{
+                    StringBuilder sb = new StringBuilder();
                     for (User user : users){
                         final String fileName = user.getFeatureFile();
+                        sb.append(fileName); sb.append(' ');
                         File head = new File(Constants.HEAD_DIR + fileName);
                         if(!head.exists()) {
                             boolean result = FileManagement.download(getFragmentActivity().getApplicationContext(),
@@ -172,6 +174,7 @@ public class MainFreeFragment extends MyLazyFragment {
                             }
                         }
                     }
+                    CommonUtils.saveSharedPreference(getActivity(), "FaceNames", sb.toString());
                     new HeadHandler().sendEmptyMessage(0);
                 }).run();
 
@@ -190,7 +193,7 @@ public class MainFreeFragment extends MyLazyFragment {
         public void handleMessage(Message msg) {
             progressDialog.dismiss();
             toast("拉取成功");
-            startActivityForResult(new Intent(getActivity(), MainActivity.class), 1);
+            startActivityForResult(new Intent(getActivity(), RegisterAndRecognizeActivity.class), 1);
         }
     }
 }
