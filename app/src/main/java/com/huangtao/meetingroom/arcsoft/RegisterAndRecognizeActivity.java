@@ -8,6 +8,8 @@ import android.content.res.Configuration;
 import android.graphics.Point;
 import android.hardware.Camera;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -49,6 +51,8 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
+
+import static java.lang.Thread.sleep;
 
 public class RegisterAndRecognizeActivity extends AppCompatActivity implements ViewTreeObserver.OnGlobalLayoutListener {
     private static final String TAG = "RegisterAndRecognize";
@@ -155,6 +159,14 @@ public class RegisterAndRecognizeActivity extends AppCompatActivity implements V
 //        });
 //        RecyclerView recyclerShowFaceInfo = findViewById(R.id.recycler_view_person);
         compareResultList = new ArrayList<>();
+        new Thread(()->{
+            try {
+                sleep(10000);
+                new FinishHandler().sendEmptyMessage(0);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }).run();
 //        adapter = new ShowFaceInfoAdapter(compareResultList, this);
 //        recyclerShowFaceInfo.setAdapter(adapter);
 //        DisplayMetrics dm = getResources().getDisplayMetrics();
@@ -548,11 +560,6 @@ public class RegisterAndRecognizeActivity extends AppCompatActivity implements V
                             setResult(RESULT_OK, intent);
                             finish();
                             }
-                         else {
-                            Intent intent = new Intent();
-                            setResult(RESULT_CANCELED);
-                            finish();
-                        }
                     }
 
                     @Override
@@ -579,4 +586,13 @@ public class RegisterAndRecognizeActivity extends AppCompatActivity implements V
             activeEngine();
         }
     }
+
+    protected class FinishHandler extends Handler{
+        @Override
+        public void handleMessage(Message msg) {
+            finish();
+        }
+    }
 }
+
+
