@@ -166,7 +166,7 @@ public class RegisterAndRecognizeActivity extends AppCompatActivity implements V
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-        }).run();
+        }).start();
 //        adapter = new ShowFaceInfoAdapter(compareResultList, this);
 //        recyclerShowFaceInfo.setAdapter(adapter);
 //        DisplayMetrics dm = getResources().getDisplayMetrics();

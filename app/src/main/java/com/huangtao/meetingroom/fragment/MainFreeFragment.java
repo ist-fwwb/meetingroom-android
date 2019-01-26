@@ -27,6 +27,8 @@ import com.huangtao.meetingroom.network.Network;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -116,6 +118,9 @@ public class MainFreeFragment extends MyLazyFragment {
             @Override
             public void onResponse(Call<List<Meeting>> call, Response<List<Meeting>> response) {
                 meetings = response.body();
+                Collections.sort(meetings, (x,y)->{
+                   return x.getStartTime() - y.getStartTime();
+                });
                 meetingAdapter.setDatas(meetings);
                 listRefreshTime.setText("上次更新: " + TimeUtils.millis2String(System.currentTimeMillis()));
                 listRefresh.setEnabled(true);
@@ -200,6 +205,7 @@ public class MainFreeFragment extends MyLazyFragment {
                 public void onResponse(Call<List<User>> call, Response<List<User>> response) {
                     String id = response.body().get(0).getId();
                     nextMeeting.getAttendants().put(id, CommonUtils.getTime());
+                    nextMeeting.setStatus(Status.Running);
                 }
 
                 @Override
