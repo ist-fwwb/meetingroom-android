@@ -28,7 +28,7 @@ public class Network {
                 //设置数据解析器
                 .addConverterFactory(factory)
                 //设置网络请求的Url地址
-                .baseUrl("http://129.211.119.51:31000/")
+                .baseUrl("http://47.106.8.44:31000")
                 .build();
         // 创建网络请求接口的实例
         return retrofit.create(Api.class);
