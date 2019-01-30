@@ -5,6 +5,7 @@ import com.huangtao.meetingroom.model.meta.Status;
 
 import java.io.Serializable;
 import java.util.Map;
+import java.util.Set;
 
 public class Meeting implements Serializable {
     String id;
@@ -22,6 +23,36 @@ public class Meeting implements Serializable {
     String attendantNum;  // a four digit number to attend the meeting
     Status status;
     MeetingType type;
+    Set<String> tags;
+
+    @Override
+    public String toString() {
+        return "Meeting{" +
+                "id='" + id + '\'' +
+                ", heading='" + heading + '\'' +
+                ", description='" + description + '\'' +
+                ", roomId='" + roomId + '\'' +
+                ", date='" + date + '\'' +
+                ", location='" + location + '\'' +
+                ", startTime=" + startTime +
+                ", endTime=" + endTime +
+                ", hostId='" + hostId + '\'' +
+                ", attendants=" + attendants +
+                ", needSignIn=" + needSignIn +
+                ", attendantNum='" + attendantNum + '\'' +
+                ", status=" + status +
+                ", type=" + type +
+                ", tags=" + tags +
+                '}';
+    }
+
+    public Set<String> getTags() {
+        return tags;
+    }
+
+    public void setTags(Set<String> tags) {
+        this.tags = tags;
+    }
 
     public String getId() {
         return id;
@@ -135,23 +166,4 @@ public class Meeting implements Serializable {
         this.type = type;
     }
 
-    @Override
-    public String toString() {
-        return "Meeting{" +
-                "id='" + id + '\'' +
-                ", heading='" + heading + '\'' +
-                ", description='" + description + '\'' +
-                ", roomId='" + roomId + '\'' +
-                ", date='" + date + '\'' +
-                ", location='" + location + '\'' +
-                ", startTime=" + startTime +
-                ", endTime=" + endTime +
-                ", hostId='" + hostId + '\'' +
-                ", attendants=" + attendants +
-                ", needSignIn=" + needSignIn +
-                ", attendantNum='" + attendantNum + '\'' +
-                ", status=" + status +
-                ", type=" + type +
-                '}';
-    }
 }

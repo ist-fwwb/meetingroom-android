@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Message;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -203,6 +204,7 @@ public class MainFreeFragment extends MyLazyFragment {
             Network.getInstance().queryUser(null, null, faceFeatureFile).enqueue(new Callback<List<User>>() {
                 @Override
                 public void onResponse(Call<List<User>> call, Response<List<User>> response) {
+                    Log.i("freeFragment", "获取user信息成功");
                     String id = response.body().get(0).getId();
                     nextMeeting.getAttendants().put(id, CommonUtils.getTime());
                     nextMeeting.setStatus(Status.Running);
@@ -213,14 +215,16 @@ public class MainFreeFragment extends MyLazyFragment {
 
                 }
             });
-            Network.getInstance().modifyMeeting(nextMeeting).enqueue(new Callback<Meeting>() {
+            Network.getInstance().modifyMeeting(nextMeeting.getId(), nextMeeting).enqueue(new Callback<Meeting>() {
                 @Override
                 public void onResponse(Call<Meeting> call, Response<Meeting> response) {
-
+                    Log.i("freeFragment", "修改会议状态成功");
+                    Log.i("freeFragment", nextMeeting.toString());
                 }
 
                 @Override
                 public void onFailure(Call<Meeting> call, Throwable t) {
+                    Log.i("freeFragment", "修改会议状态失败");
 
                 }
             });

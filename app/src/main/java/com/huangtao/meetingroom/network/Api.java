@@ -79,7 +79,7 @@ public interface Api {
     Call<String> exitMeeting(@Path("id") String id, @Path("userId") String userId);
 
     @PUT("meeting/{id}")
-    Call<Meeting> modifyMeeting(@Body Meeting meeting);
+    Call<Meeting> modifyMeeting(@Path("id") String id, @Body Meeting meeting);
 
 
 
