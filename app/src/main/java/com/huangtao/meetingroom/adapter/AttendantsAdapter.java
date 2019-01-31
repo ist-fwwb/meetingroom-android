@@ -20,7 +20,10 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class AttendantsAdapter extends BaseAdapter {
-    List<Map.Entry<String, String>> attendants = new ArrayList<>();
+    List<Map.Entry<String, String>> attendants;
+    public AttendantsAdapter(List<Map.Entry<String, String>> attendants){
+        this.attendants = attendants;
+    }
     @Override
     public int getCount() {
         return attendants.size();

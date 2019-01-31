@@ -194,6 +194,17 @@ public class MainFreeFragment extends MyLazyFragment {
         }
     }
 
+    @SuppressLint("HandlerLeak")
+    private class FragmentHandler extends android.os.Handler {
+        @Override
+        public void handleMessage(Message msg) {
+            getActivity().getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_layout, new MainBusyFragment(), null)
+                    .addToBackStack(null)
+                    .commit();
+        }
+    }
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -215,6 +226,7 @@ public class MainFreeFragment extends MyLazyFragment {
                         public void onResponse(Call<Meeting> call, Response<Meeting> response) {
                             Log.i("freeFragment", "修改会议状态成功");
                             Log.i("freeFragment", nextMeeting.toString());
+                            new FragmentHandler().sendEmptyMessage(0);
                         }
 
                         @Override
@@ -230,11 +242,6 @@ public class MainFreeFragment extends MyLazyFragment {
 
                 }
             });
-            getActivity().getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.fragment_layout, new MainBusyFragment(), null)
-                    .addToBackStack(null)
-                    .commit();
         }
         else {
             toast("人脸识别失败");

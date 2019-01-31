@@ -5,8 +5,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
+import com.blankj.utilcode.util.TimeUtils;
 import com.huangtao.meetingroom.R;
 import com.huangtao.meetingroom.adapter.AttendantsAdapter;
 import com.huangtao.meetingroom.common.MyLazyFragment;
@@ -36,8 +39,8 @@ public class MainBusyFragment extends MyLazyFragment {
     Button signinButton;
 
     Meeting meeting;
-    AttendantsAdapter attendantsAdapter;
     ProgressDialog progressDialog;
+
     @Override
     protected int getLayoutId() {
         return R.layout.fragment_main_busy;
@@ -58,16 +61,20 @@ public class MainBusyFragment extends MyLazyFragment {
 
     @Override
     protected void initData() {
-        attendantsAdapter = new AttendantsAdapter();
-        listView.setAdapter(attendantsAdapter);
+        final ImageView listRefresh = findViewById(R.id.list_refresh);
         initList(CommonUtils.getStringFromSharedPreference(getActivity(), "NextMeetingId"));
-        Log.i(TAG, CommonUtils.getStringFromSharedPreference(getActivity(), "NextMeetingId"));
+        listRefresh.setOnClickListener((v)->{
+            listRefresh.setEnabled(false);
+            initList(CommonUtils.getStringFromSharedPreference(getActivity(), "NextMeetingId"));
+        });
         signinButton.setOnClickListener((v)->{
             //TODO 人脸识别
         });
     }
 
     private void initList(String meetingId){
+        final TextView listRefreshTime = findViewById(R.id.list_refresh_time);
+        final ImageView listRefresh = findViewById(R.id.list_refresh);
         //TODO 拿到会议信息并更新或初始化变量meeting
         Network.getInstance().queryMeetingById(meetingId).enqueue(new Callback<Meeting>() {
             @Override
@@ -77,7 +84,10 @@ public class MainBusyFragment extends MyLazyFragment {
                 attendants.sort((x,y)->{
                     return CommonUtils.compareDate(x.getValue(), y.getValue());
                 });
-                attendantsAdapter.setAttendants(attendants);
+                listView.setAdapter(new AttendantsAdapter(attendants));
+                listRefreshTime.setText("上次更新: " + TimeUtils.millis2String(System.currentTimeMillis()));
+                listRefresh.setEnabled(true);
+                toast("刷新成功");
                 Log.i(TAG, meeting.toString());
             }
 

@@ -133,8 +133,8 @@ public class CommonUtils {
 
     public static int compareDate(String s1, String s2){
         if (s1.isEmpty() && s2.isEmpty()) return 0;
-        else if (s1.isEmpty()) return -1;
-        else if (s2.isEmpty()) return 1;
+        else if (s1.isEmpty()) return 1;
+        else if (s2.isEmpty()) return -1;
         else {
             SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm");
             try {
