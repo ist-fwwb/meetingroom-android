@@ -24,6 +24,7 @@ public class Meeting implements Serializable {
     Status status;
     MeetingType type;
     Set<String> tags;
+    long timestamp;
 
     @Override
     public String toString() {
@@ -43,7 +44,16 @@ public class Meeting implements Serializable {
                 ", status=" + status +
                 ", type=" + type +
                 ", tags=" + tags +
+                ", timestamp=" + timestamp +
                 '}';
+    }
+
+    public long getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(long timestamp) {
+        this.timestamp = timestamp;
     }
 
     public Set<String> getTags() {

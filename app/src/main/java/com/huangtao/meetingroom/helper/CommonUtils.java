@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.text.DateFormat;
 import java.text.FieldPosition;
+import java.text.ParseException;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -128,6 +129,23 @@ public class CommonUtils {
         }
         byte[] s = out.toByteArray();
         return s;
+    }
 
+    public static int compareDate(String s1, String s2){
+        if (s1.isEmpty() && s2.isEmpty()) return 0;
+        else if (s1.isEmpty()) return -1;
+        else if (s2.isEmpty()) return 1;
+        else {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm");
+            try {
+                Date d1 = dateFormat.parse(s1);
+                Date d2 = dateFormat.parse(s2);
+                if (d1.before(d2)) return -1;
+                else return 1;
+            } catch (ParseException e) {
+                e.printStackTrace();
+                return 0;
+            }
+        }
     }
 }

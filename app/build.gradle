@@ -9,7 +9,7 @@ android {
     }
     defaultConfig {
         applicationId "com.huangtao.meetingroom"
-        minSdkVersion 23
+        minSdkVersion 24
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 10
         versionName "1.0"

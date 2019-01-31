@@ -200,31 +200,33 @@ public class MainFreeFragment extends MyLazyFragment {
         if (resultCode == RESULT_OK){
             //TODO 上传会议信息并跳转到开会中fragment
             toast("人脸识别成功");
-            String faceFeatureFile = data.getStringExtra("faceFeatureFile");
-            Network.getInstance().queryUser(null, null, faceFeatureFile).enqueue(new Callback<List<User>>() {
+            String featureFileName = data.getStringExtra("featureFileName");
+            Log.i("freeFragment", featureFileName);
+            Network.getInstance().queryUser(null, null, featureFileName).enqueue(new Callback<List<User>>() {
                 @Override
                 public void onResponse(Call<List<User>> call, Response<List<User>> response) {
                     Log.i("freeFragment", "获取user信息成功");
                     String id = response.body().get(0).getId();
                     nextMeeting.getAttendants().put(id, CommonUtils.getTime());
-                    nextMeeting.setStatus(Status.Running);
+                    //TODO UNDO the notation
+                    //nextMeeting.setStatus(Status.Running);
+                    Network.getInstance().modifyMeeting(nextMeeting.getId(), nextMeeting).enqueue(new Callback<Meeting>() {
+                        @Override
+                        public void onResponse(Call<Meeting> call, Response<Meeting> response) {
+                            Log.i("freeFragment", "修改会议状态成功");
+                            Log.i("freeFragment", nextMeeting.toString());
+                        }
+
+                        @Override
+                        public void onFailure(Call<Meeting> call, Throwable t) {
+                            Log.i("freeFragment", "修改会议状态失败");
+
+                        }
+                    });
                 }
 
                 @Override
                 public void onFailure(Call<List<User>> call, Throwable t) {
-
-                }
-            });
-            Network.getInstance().modifyMeeting(nextMeeting.getId(), nextMeeting).enqueue(new Callback<Meeting>() {
-                @Override
-                public void onResponse(Call<Meeting> call, Response<Meeting> response) {
-                    Log.i("freeFragment", "修改会议状态成功");
-                    Log.i("freeFragment", nextMeeting.toString());
-                }
-
-                @Override
-                public void onFailure(Call<Meeting> call, Throwable t) {
-                    Log.i("freeFragment", "修改会议状态失败");
 
                 }
             });

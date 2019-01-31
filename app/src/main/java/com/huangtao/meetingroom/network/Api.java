@@ -36,7 +36,7 @@ public interface Api {
                                 featureFile);
 
     @GET("user/")
-    Call<List<User>> queryUser(@Query("type") Type type, @Query("ids") List<String> ids, @Query("featureFileNames") String featureFileNames);
+    Call<List<User>> queryUser(@Query("type") Type type, @Query("ids") List<String> ids, @Query("featureFileName") String featureFileName);
 
     @GET("user/{id}")
     Call<User> queryUserById(@Path("id") String id);
