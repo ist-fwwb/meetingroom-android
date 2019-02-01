@@ -90,53 +90,58 @@
             android:layout_alignTop="@id/meetingroom_name"
             android:layout_marginLeft="20dp"
             android:src="@mipmap/ic_qrcode"/>
+
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_marginBottom="70dp"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_alignParentStart="true"
+            android:layout_marginBottom="70dp">
+
             <TextView
                 android:id="@+id/status"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="空 闲"
                 android:layout_centerInParent="true"
-                android:textSize="72sp"
+                android:text="空 闲"
                 android:textColor="@color/douban_green"
-                android:textStyle="bold"/>
+                android:textSize="72sp"
+                android:textStyle="bold" />
+
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
                 android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
                 android:layout_marginBottom="30dp"
-                android:layout_centerHorizontal="true">
+                android:orientation="horizontal">
 
                 <Button
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:text="开启"
                     android:id="@+id/start"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
                     android:background="@drawable/bg_home_open"
+                    android:text="开启"
                     android:textColor="@color/white"
-                    android:textSize="16sp"/>
+                    android:textSize="16sp" />
 
                 <Button
                     android:layout_width="80dp"
                     android:layout_height="80dp"
-                    android:text="预定"
+                    android:layout_marginLeft="20dp"
                     android:background="@drawable/bg_home_order"
+                    android:id="@+id/register"
+                    android:text="预定"
                     android:textColor="@color/white"
-                    android:textSize="16sp"
-                    android:layout_marginLeft="20dp"/>
+                    android:textSize="16sp" />
 
                 <Button
                     android:layout_width="80dp"
                     android:layout_height="80dp"
-                    android:text="嘉宾"
+                    android:layout_marginLeft="20dp"
                     android:background="@drawable/bg_home_guest"
+                    android:text="嘉宾"
                     android:textColor="@color/white"
-                    android:textSize="16sp"
-                    android:layout_marginLeft="20dp"/>
+                    android:textSize="16sp" />
 
             </LinearLayout>
         </RelativeLayout>

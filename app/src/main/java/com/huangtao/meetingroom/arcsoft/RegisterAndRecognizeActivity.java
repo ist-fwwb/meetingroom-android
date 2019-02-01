@@ -141,7 +141,6 @@ public class RegisterAndRecognizeActivity extends AppCompatActivity implements V
 //                break;
 //        }
         //本地人脸库初始化
-        //TODO 通过meeting来进行初始化
         FaceServer.getInstance().init(this);
 
         previewView = findViewById(R.id.texture_preview);

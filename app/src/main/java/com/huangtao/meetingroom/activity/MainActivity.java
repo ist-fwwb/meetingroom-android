@@ -89,9 +89,6 @@ public class MainActivity extends MyActivity
             }
         });
 
-
-
-
         switchFragment(MainFreeFragment.newInstance());
     }
 

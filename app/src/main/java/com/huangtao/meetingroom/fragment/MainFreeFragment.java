@@ -1,6 +1,7 @@
 package com.huangtao.meetingroom.fragment;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Message;
@@ -13,6 +14,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.TimeUtils;
+import com.google.zxing.qrcode.encoder.QRCode;
+import com.huangtao.dialog.QRCodeDialog;
 import com.huangtao.meetingroom.R;
 import com.huangtao.meetingroom.activity.MainActivity;
 import com.huangtao.meetingroom.adapter.MeetingAdapter;
@@ -25,6 +28,7 @@ import com.huangtao.meetingroom.model.User;
 import com.huangtao.meetingroom.model.meta.Status;
 import com.huangtao.meetingroom.network.FileManagement;
 import com.huangtao.meetingroom.network.Network;
+import com.uuzuche.lib_zxing.activity.CodeUtils;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -50,6 +54,12 @@ public class MainFreeFragment extends MyLazyFragment {
 
     @BindView(R.id.start)
     Button startButton;
+
+    @BindView(R.id.qrcode)
+    ImageView qrcode;
+
+    @BindView(R.id.register)
+    Button registerButton;
 
     MeetingAdapter meetingAdapter;
 
@@ -108,6 +118,16 @@ public class MainFreeFragment extends MyLazyFragment {
                 prepareFilesBeforeRecognize(nextMeeting);
             }
         });
+
+        registerButton.setOnClickListener((v)->{
+            //TODO 预定当天的会议室
+        });
+
+        qrcode.setOnClickListener((v)->{
+            QRCodeDialog.Builder dialog = new QRCodeDialog.Builder(getFragmentActivity());
+            dialog.setQrcode(CodeUtils.createImage(Constants.ROOM_ID, 400, 400, null));
+            dialog.create().show();
+        });
     }
 
 
@@ -161,14 +181,8 @@ public class MainFreeFragment extends MyLazyFragment {
                         sb.append(fileName); sb.append(' ');
                         File head = new File(Constants.HEAD_DIR + fileName);
                         if(!head.exists()) {
-                            boolean result = FileManagement.download(getFragmentActivity().getApplicationContext(),
+                            FileManagement.download(getFragmentActivity().getApplicationContext(),
                                     fileName, Constants.HEAD_DIR);
-                            if (!result) {
-                                toast("参与者人脸信息拉取失败");
-                                progressDialog.dismiss();
-                                return;
-                                //new HeadHandler().sendEmptyMessage(0);
-                            }
                         }
                     }
                     CommonUtils.saveSharedPreference(getActivity(), "FaceNames", sb.toString());
@@ -209,7 +223,6 @@ public class MainFreeFragment extends MyLazyFragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK){
-            //TODO 上传会议信息并跳转到开会中fragment
             toast("人脸识别成功");
             String featureFileName = data.getStringExtra("featureFileName");
             Log.i("freeFragment", featureFileName);
@@ -219,8 +232,9 @@ public class MainFreeFragment extends MyLazyFragment {
                     Log.i("freeFragment", "获取user信息成功");
                     String id = response.body().get(0).getId();
                     nextMeeting.getAttendants().put(id, CommonUtils.getTime());
-                    //TODO UNDO the notation
+                    //TODO 设置会议状态(取消注释）
                     //nextMeeting.setStatus(Status.Running);
+                    openDoor();
                     Network.getInstance().modifyMeeting(nextMeeting.getId(), nextMeeting).enqueue(new Callback<Meeting>() {
                         @Override
                         public void onResponse(Call<Meeting> call, Response<Meeting> response) {
@@ -246,5 +260,14 @@ public class MainFreeFragment extends MyLazyFragment {
         else {
             toast("人脸识别失败");
         }
+    }
+
+    private void openDoor() {
+        if(Constants.bluetoothSocket == null){
+            toast("蓝牙未连接");
+        } else if(!Constants.bluetoothSocket.isConnected()){
+            CommonUtils.connectRelay();
+        }
+        CommonUtils.openRelay();
     }
 }

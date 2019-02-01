@@ -111,7 +111,6 @@ public class FaceServer {
      * @param context 上下文对象
      */
     private void initFaceList(Context context) {
-        //TODO 通过meeting来初始化FaceList
         synchronized (this) {
             if (ROOT_PATH == null) {
                 ROOT_PATH = context.getFilesDir().getAbsolutePath();
