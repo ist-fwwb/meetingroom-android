@@ -1,7 +1,6 @@
 package com.huangtao.meetingroom.fragment;
 
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Message;
@@ -14,10 +13,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.TimeUtils;
-import com.google.zxing.qrcode.encoder.QRCode;
 import com.huangtao.dialog.QRCodeDialog;
 import com.huangtao.meetingroom.R;
-import com.huangtao.meetingroom.activity.MainActivity;
 import com.huangtao.meetingroom.adapter.MeetingAdapter;
 import com.huangtao.meetingroom.arcsoft.RegisterAndRecognizeActivity;
 import com.huangtao.meetingroom.common.Constants;
@@ -32,9 +29,7 @@ import com.uuzuche.lib_zxing.activity.CodeUtils;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 

@@ -19,6 +19,7 @@ import com.huangtao.meetingroom.R;
 import com.huangtao.meetingroom.common.Constants;
 import com.huangtao.meetingroom.common.MyActivity;
 import com.huangtao.meetingroom.fragment.MainFreeFragment;
+import com.huangtao.meetingroom.fragment.MeetingRoomListFragment;
 import com.huangtao.meetingroom.helper.CommonUtils;
 
 import java.io.IOException;
@@ -89,7 +90,8 @@ public class MainActivity extends MyActivity
             }
         });
 
-        switchFragment(MainFreeFragment.newInstance());
+        if (Constants.ROOM_ID.isEmpty()) switchFragment(MeetingRoomListFragment.newInstance());
+        else switchFragment(MainFreeFragment.newInstance());
     }
 
     @Override
@@ -115,8 +117,8 @@ public class MainActivity extends MyActivity
 
         if (id == R.id.nav_bluetooth) {
             startActivity(BluetoothActivity.class);
-        } else if (id == R.id.nav_gallery) {
-
+        } else if (id == R.id.nav_meetingRoom) {
+            switchFragment(MeetingRoomListFragment.newInstance());
         } else if (id == R.id.nav_slideshow) {
 
         } else if (id == R.id.nav_manage) {
