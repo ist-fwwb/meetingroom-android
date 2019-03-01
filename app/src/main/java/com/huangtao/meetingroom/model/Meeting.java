@@ -9,7 +9,7 @@ import java.util.Set;
 
 public class Meeting implements Serializable {
     String id;
-
+    User host;
     String heading;
     String description;
     String roomId;
@@ -25,6 +25,14 @@ public class Meeting implements Serializable {
     MeetingType type;
     Set<String> tags;
     long timestamp;
+
+    public User getHost() {
+        return host;
+    }
+
+    public void setHost(User host) {
+        this.host = host;
+    }
 
     @Override
     public String toString() {

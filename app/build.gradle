@@ -169,6 +169,8 @@ dependencies {
 
     // qrcode
     implementation 'cn.yipianfengye.android:zxing-library:2.2'
+    //SmartRefresh
+    implementation 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.0-alpha-20'
 }
 
 repositories {

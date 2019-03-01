@@ -4,6 +4,7 @@ import com.huangtao.meetingroom.model.Meeting;
 import com.huangtao.meetingroom.model.MeetingRoom;
 import com.huangtao.meetingroom.model.TimeSlice;
 import com.huangtao.meetingroom.model.User;
+import com.huangtao.meetingroom.model.meta.MeetingType;
 import com.huangtao.meetingroom.model.meta.Size;
 import com.huangtao.meetingroom.model.meta.Status;
 import com.huangtao.meetingroom.model.meta.Type;
@@ -26,8 +27,7 @@ public interface Api {
 
     // user
     @POST("user/login")
-    Call<User> login(@Query("phone") String phone, @Query("password") String password, @Query
-            ("deviceId") String deviceId);
+    Call<User> login(@Query("phone") String phone, @Query("password") String password, @Query("deviceId") String deviceId);
 
     @POST("user/")
     Call<User> register(@Query("enterpriseId") String enterpriseId, @Query("phone") String phone,
@@ -36,14 +36,13 @@ public interface Api {
                                 featureFile);
 
     @GET("user/")
-    Call<List<User>> queryUser(@Query("type") Type type, @Query("ids") List<String> ids, @Query("featureFileName") String featureFileName);
+    Call<List<User>> queryUser(@Query("type") Type type, @Query("ids") List<String> ids, @Query("featureFileName") String featureFile);
 
     @GET("user/{id}")
     Call<User> queryUserById(@Path("id") String id);
 
     @GET("user/{id}/meeting")
-    Call<List<Meeting>> queryMeetingByUid(@Path("id") String id, @Query("date") String date,
-                                          @Query("status") Status status);
+    Call<List<Meeting>> queryMeetingByUid(@Path("id") String id, @Query("date") String date, @Query("status") Status status);
 
     // meeting room
     @GET("meetingroom/")
@@ -79,8 +78,6 @@ public interface Api {
     Call<String> exitMeeting(@Path("id") String id, @Path("userId") String userId);
 
     @PUT("meeting/{id}")
-    Call<Meeting> modifyMeeting(@Path("id") String id, @Body Meeting meeting);
-
-
+    Call<Meeting> modifyMeeting(@Body Meeting meeting, @Path("id") String id);
 
 }

@@ -3,6 +3,7 @@ package com.huangtao.meetingroom.fragment;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -92,7 +93,7 @@ public class MainBusyFragment extends MyLazyFragment {
             //TODO 将状态设置为结束（取消掉注释）
             //meeting.setStatus(Status.Stopped);
             closeDoor();
-            Network.getInstance().modifyMeeting(meeting.getId(), meeting).enqueue(new Callback<Meeting>() {
+            Network.getInstance().modifyMeeting(meeting, meeting.getId()).enqueue(new Callback<Meeting>() {
                 @Override
                 public void onResponse(Call<Meeting> call, Response<Meeting> response) {
                     Log.i(TAG, "结束会议成功");
@@ -165,7 +166,7 @@ public class MainBusyFragment extends MyLazyFragment {
                     String id = response.body().get(0).getId();
                     meeting.getAttendants().put(id, CommonUtils.getTime());
                     initList(meeting.getId());
-                    Network.getInstance().modifyMeeting(meeting.getId(), meeting).enqueue(new Callback<Meeting>() {
+                    Network.getInstance().modifyMeeting(meeting, meeting.getId()).enqueue(new Callback<Meeting>() {
                         @Override
                         public void onResponse(Call<Meeting> call, Response<Meeting> response) {
                             Log.i(TAG, "修改会议状态成功");
@@ -190,4 +191,13 @@ public class MainBusyFragment extends MyLazyFragment {
             toast("人脸识别失败");
         }
     }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            return true;
+        }
+        return false;
+    }
+
 }

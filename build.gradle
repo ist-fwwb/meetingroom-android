@@ -12,9 +12,9 @@ buildscript {
 
 allprojects {
     repositories {
+        maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
+        maven{ url 'http://maven.aliyun.com/nexus/content/repositories/jcenter'}
         google()
-        maven {url "https://maven.google.com"}
-        jcenter() { url 'http://jcenter.bintray.com/'}
     }
 
     //解决app:mockableAndroidJar错误的问题
