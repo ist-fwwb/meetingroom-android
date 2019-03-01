@@ -19,12 +19,21 @@ public class Meeting implements Serializable {
     int endTime;
     String hostId;
     Map<String, String> attendants;
+    Map<String, String> attendantsName;
     boolean needSignIn;
     String attendantNum;  // a four digit number to attend the meeting
     Status status;
     MeetingType type;
     Set<String> tags;
     long timestamp;
+
+    public Map<String, String> getAttendantsName() {
+        return attendantsName;
+    }
+
+    public void setAttendantsName(Map<String, String> attendantsName) {
+        this.attendantsName = attendantsName;
+    }
 
     public User getHost() {
         return host;
