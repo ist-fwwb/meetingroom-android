@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Message;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -48,6 +49,7 @@ import retrofit2.Response;
 import static android.app.Activity.RESULT_OK;
 
 public class MainFreeFragment extends MyLazyFragment {
+    static MainFreeFragment mainFreeFragment = null;
     private static final String TAG = "MainFreefragment";
 
     ProgressDialog progressDialog;
@@ -71,8 +73,15 @@ public class MainFreeFragment extends MyLazyFragment {
     Meeting nextMeeting;
     MyRecyclerViewAdapter myRecyclerViewAdapter;
 
-    public static MainFreeFragment newInstance() {
-        return new MainFreeFragment();
+    public static MainFreeFragment getInstance() {
+        if (mainFreeFragment == null){
+            synchronized (MainFreeFragment.class){
+                if (mainFreeFragment == null) {
+                    mainFreeFragment = new MainFreeFragment();
+                }
+            }
+        }
+        return mainFreeFragment;
     }
 
     @Override
@@ -237,9 +246,10 @@ public class MainFreeFragment extends MyLazyFragment {
     private class FragmentHandler extends android.os.Handler {
         @Override
         public void handleMessage(Message msg) {
+            MainBusyFragment.getInstance().setMeeting(nextMeeting);
             getActivity().getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.fragment_layout, new MainBusyFragment(), null)
+                    .replace(R.id.fragment_layout, MainBusyFragment.getInstance(), null)
                     .addToBackStack(null)
                     .commit();
         }

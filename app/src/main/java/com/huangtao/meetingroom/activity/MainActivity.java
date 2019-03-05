@@ -91,7 +91,7 @@ public class MainActivity extends MyActivity
         });
 
         if (Constants.ROOM_ID.isEmpty()) switchFragment(MeetingRoomListFragment.newInstance());
-        else switchFragment(MainFreeFragment.newInstance());
+        else switchFragment(MainFreeFragment.getInstance());
     }
 
     @Override

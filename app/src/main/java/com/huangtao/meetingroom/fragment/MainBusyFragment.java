@@ -45,6 +45,7 @@ import static android.app.Activity.RESULT_OK;
 public class MainBusyFragment extends MyLazyFragment {
 
     final String TAG = "MainBusyFragment";
+    static MainBusyFragment mainBusyFragment = null;
 
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
@@ -62,9 +63,19 @@ public class MainBusyFragment extends MyLazyFragment {
     SmartRefreshLayout refreshLayout;
 
     Meeting meeting;
-    String meetingId;
     ProgressDialog progressDialog;
     RecyclerAttendantsAdapter attendantsAdapter;
+
+    public static MainBusyFragment getInstance(){
+        if (mainBusyFragment == null){
+            synchronized (MainBusyFragment.class){
+                if (mainBusyFragment == null){
+                    mainBusyFragment = new MainBusyFragment();
+                }
+            }
+        }
+        return mainBusyFragment;
+    }
 
     @Override
     protected int getLayoutId() {
@@ -83,21 +94,24 @@ public class MainBusyFragment extends MyLazyFragment {
         progressDialog.setMessage("正在加载中……");
     }
 
+    public void setMeeting(Meeting meeting) {
+        this.meeting = meeting;
+    }
+
     @Override
     protected void initData() {
-        meetingId = CommonUtils.getStringFromSharedPreference(getActivity(), "NextMeetingId");
         final ImageView listRefresh = findViewById(R.id.list_refresh);
         attendantsAdapter = new RecyclerAttendantsAdapter(getContext(), new ArrayList<Map.Entry<String, String>>());
         recyclerView.setAdapter(attendantsAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.addItemDecoration(new DividerItemDecoration(getContext(),DividerItemDecoration.VERTICAL));
 
-        initList(meetingId);
+        initList();
         initRefreshLayout();
 
         listRefresh.setOnClickListener((v)->{
             listRefresh.setEnabled(false);
-            initList(CommonUtils.getStringFromSharedPreference(getActivity(), "NextMeetingId"));
+            initList();
         });
 
         signinButton.setOnClickListener((v)->{
@@ -115,7 +129,7 @@ public class MainBusyFragment extends MyLazyFragment {
                     Log.i(TAG, meeting.toString());
                     getActivity().getSupportFragmentManager()
                             .beginTransaction()
-                            .replace(R.id.fragment_layout, new MainFreeFragment(), null)
+                            .replace(R.id.fragment_layout, MainFreeFragment.getInstance(), null)
                             .addToBackStack(null)
                             .commit();
                 }
@@ -143,10 +157,10 @@ public class MainBusyFragment extends MyLazyFragment {
         CommonUtils.closeRelay();
     }
 
-    private void initList(String meetingId){
+    private void initList(){
         final TextView listRefreshTime = findViewById(R.id.list_refresh_time);
         final ImageView listRefresh = findViewById(R.id.list_refresh);
-        Network.getInstance().queryMeetingById(meetingId).enqueue(new Callback<Meeting>() {
+        Network.getInstance().queryMeetingById(meeting.getId()).enqueue(new Callback<Meeting>() {
             @Override
             public void onResponse(Call<Meeting> call, Response<Meeting> response) {
                 meeting = response.body();
@@ -173,7 +187,7 @@ public class MainBusyFragment extends MyLazyFragment {
         refreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
-                initList(meetingId);
+                initList();
                 refreshlayout.finishRefresh(true);//传入false表示刷新失败
             }
         });
@@ -196,7 +210,7 @@ public class MainBusyFragment extends MyLazyFragment {
                     Log.i(TAG, "获取user信息成功");
                     String id = response.body().get(0).getId();
                     meeting.getAttendants().put(id, CommonUtils.getTime());
-                    initList(meeting.getId());
+                    initList();
                     Network.getInstance().modifyMeeting(meeting, meeting.getId()).enqueue(new Callback<Meeting>() {
                         @Override
                         public void onResponse(Call<Meeting> call, Response<Meeting> response) {
