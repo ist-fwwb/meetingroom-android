@@ -89,7 +89,7 @@ public class MainBusyFragment extends MyLazyFragment {
 
     @Override
     protected void initView() {
-        View header = LayoutInflater.from(getFragmentActivity()).inflate(R.layout.item_main_busy_header, null, false);
+        //View header = LayoutInflater.from(getFragmentActivity()).inflate(R.layout.item_main_busy_header, null, false);
         progressDialog = new ProgressDialog(getActivity());
         progressDialog.setMessage("正在加载中……");
     }
@@ -184,7 +184,6 @@ public class MainBusyFragment extends MyLazyFragment {
                 attendantsAdapter.setData(attendants);
                 listRefreshTime.setText("上次更新: " + TimeUtils.millis2String(System.currentTimeMillis()));
                 listRefresh.setEnabled(true);
-                toast("刷新成功");
                 Log.i(TAG, meeting.toString());
             }
 
@@ -255,6 +254,12 @@ public class MainBusyFragment extends MyLazyFragment {
         else {
             toast("人脸识别失败");
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        initList();
     }
 
     @Override

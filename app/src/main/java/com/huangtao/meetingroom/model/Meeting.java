@@ -215,4 +215,8 @@ public class Meeting implements Serializable {
     public boolean modifyMeetingSuccessful() {
         return getErrorNum().equals("200");
     }
+
+    public boolean isOverLapped(TimeInterval other){
+        return (startTime <= other.getStart() && endTime > other.getEnd()) || (startTime < other.getEnd() && endTime >= other.getStart());
+    }
 }

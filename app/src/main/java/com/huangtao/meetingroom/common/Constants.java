@@ -30,5 +30,5 @@ public class Constants {
     public static final String OSS_AUTH_SERVER = "http://47.106.8.44:7080/";
 
     //meetingRoom id
-    public static String ROOM_ID = "5c658217c9e77c0013607ef0";
+    public static String ROOM_ID = "5c4e9bdac9e77c00133acdd6";
 }

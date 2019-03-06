@@ -27,7 +27,9 @@ import com.huangtao.meetingroom.common.MyRecyclerViewAdapter;
 import com.huangtao.meetingroom.helper.CommonUtils;
 import com.huangtao.meetingroom.model.ForeignGuest;
 import com.huangtao.meetingroom.model.Meeting;
+import com.huangtao.meetingroom.model.TimeInterval;
 import com.huangtao.meetingroom.model.User;
+import com.huangtao.meetingroom.model.meta.MeetingType;
 import com.huangtao.meetingroom.model.meta.Status;
 import com.huangtao.meetingroom.network.FileManagement;
 import com.huangtao.meetingroom.network.Network;
@@ -42,7 +44,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 import butterknife.BindView;
 import retrofit2.Call;
@@ -144,8 +145,14 @@ public class MainFreeFragment extends MyLazyFragment {
         });
 
         registerButton.setOnClickListener((v)->{
-            //TODO 预定当天的会议室
-            prepareAllUsersFilesBeforeRecognize();
+            initList();
+            nextMeeting = generateNextMeeting();
+            if (nextMeeting == null){
+                toast("当前时间段会议室已被预订");
+            }
+            else {
+                prepareAllUsersFilesBeforeRecognize();
+            }
         });
 
         guestButton.setOnClickListener((v) ->{
@@ -178,6 +185,31 @@ public class MainFreeFragment extends MyLazyFragment {
             dialog.setQrcode(CodeUtils.createImage(Constants.ROOM_ID, 400, 400, null));
             dialog.create().show();
         });
+    }
+
+    private Meeting generateNextMeeting() {
+        TimeInterval timeInterval = findNextFreeTimeInterval();
+        if (timeInterval == null) return null;
+        Meeting meeting = new Meeting();
+        meeting.setHeading(CommonUtils.getDate() + "临时预定");
+        meeting.setDescription("临时预定");
+        meeting.setRoomId(Constants.ROOM_ID);
+        meeting.setDate(CommonUtils.getDate());
+        meeting.setStartTime(timeInterval.getStart());
+        meeting.setEndTime(timeInterval.getEnd());
+        meeting.setNeedSignIn(false);
+        meeting.setType(MeetingType.COMMON);
+        return meeting;
+    }
+
+    private TimeInterval findNextFreeTimeInterval() {
+        int start = CommonUtils.date2Time();
+        int end = start + 2;
+        TimeInterval res = new TimeInterval(start, end);
+        for (Meeting meeting : meetings){
+            if (meeting.isOverLapped(res)) return null;
+        }
+        return res;
     }
 
     private ForeignGuest checkGuestSuccess(String checkNum) {
@@ -220,7 +252,6 @@ public class MainFreeFragment extends MyLazyFragment {
                 myRecyclerViewAdapter.setData(meetings);
                 listRefreshTime.setText("上次更新: " + TimeUtils.millis2String(System.currentTimeMillis()));
                 listRefresh.setEnabled(true);
-                toast("刷新成功");
             }
 
             @Override
@@ -284,16 +315,6 @@ public class MainFreeFragment extends MyLazyFragment {
     }
 
     @SuppressLint("HandlerLeak")
-    private class HeadHandler extends android.os.Handler {
-        @Override
-        public void handleMessage(Message msg) {
-            progressDialog.dismiss();
-            //toast("拉取成功");
-            startActivityForResult(new Intent(getActivity(), RegisterAndRecognizeActivity.class), VERIFY);
-        }
-    }
-
-    @SuppressLint("HandlerLeak")
     private class FragmentHandler extends android.os.Handler {
         @Override
         public void handleMessage(Message msg) {
@@ -319,7 +340,40 @@ public class MainFreeFragment extends MyLazyFragment {
     }
 
     private void addMeetingCallback(int resultCode, Intent data) {
+        if (resultCode == RESULT_OK){
+            String featureFileName = data.getStringExtra("featureFileName");
+            Log.i("freeFragment", featureFileName);
+            Network.getInstance().queryUser(null, null, featureFileName).enqueue(new Callback<List<User>>() {
+                @Override
+                public void onResponse(Call<List<User>> call, Response<List<User>> response) {
+                    Log.i("freeFragment", "获取user信息成功");
+                    User user = response.body().get(0);
+                    //TODO 修改会议状态
+                    nextMeeting.setHostId(user.getId());
+                    //nextMeeting.setStatus(Status.Running);
+                    Network.getInstance().appointMeetingroom(nextMeeting).enqueue(new MeetingCallback(user));
+                }
 
+                @Override
+                public void onFailure(Call<List<User>> call, Throwable t) {
+                    t.printStackTrace();
+                }
+            });
+        }
+        else {
+            toast("人脸识别失败");
+        }
+    }
+
+    private void processMeeting(User user) {
+        if (nextMeeting.modifyMeetingSuccessful()){
+            toast("欢迎你， " + user.getName());
+            openDoor();
+            new FragmentHandler().sendEmptyMessage(0);
+        }
+        else {
+            toast("网络出了点问题");
+        }
     }
 
     private void verifyCallback(int resultCode, Intent data) {
@@ -331,37 +385,15 @@ public class MainFreeFragment extends MyLazyFragment {
                 public void onResponse(Call<List<User>> call, Response<List<User>> response) {
                     Log.i("freeFragment", "获取user信息成功");
                     User user = response.body().get(0);
-                    String id = user.getId();
-                    nextMeeting.getAttendants().put(id, CommonUtils.getTime());
+                    nextMeeting.getAttendants().put(user.getId(), CommonUtils.getTime());
                     //TODO 设置会议状态(取消注释）
                     //nextMeeting.setStatus(Status.Running);
-                    openDoor();
-                    Network.getInstance().modifyMeeting(nextMeeting, nextMeeting.getId()).enqueue(new Callback<Meeting>() {
-                        @Override
-                        public void onResponse(Call<Meeting> call, Response<Meeting> response) {
-                            Log.i("freeFragment", "修改会议状态成功");
-                            Log.i("freeFragment", nextMeeting.toString());
-                            nextMeeting = response.body();
-                            Log.d(TAG, "onResponse: "+nextMeeting.getTimestamp());
-                            if (!nextMeeting.modifyMeetingSuccessful()){
-                                toast("网络状态有问题请重试");
-                            }
-                            else{
-                                toast("欢迎你, " + user.getName());
-                                new FragmentHandler().sendEmptyMessage(0);
-                            }
-                        }
-
-                        @Override
-                        public void onFailure(Call<Meeting> call, Throwable t) {
-                            Log.i("freeFragment", "修改会议状态失败");
-                        }
-                    });
+                    Network.getInstance().modifyMeeting(nextMeeting, nextMeeting.getId()).enqueue(new MeetingCallback(user));
                 }
 
                 @Override
                 public void onFailure(Call<List<User>> call, Throwable t) {
-
+                    t.printStackTrace();
                 }
             });
         }
@@ -383,5 +415,24 @@ public class MainFreeFragment extends MyLazyFragment {
             CommonUtils.connectRelay();
         }
         CommonUtils.openRelay();
+    }
+
+    private class MeetingCallback implements Callback<Meeting> {
+        private final User user;
+
+        public MeetingCallback(User user) {
+            this.user = user;
+        }
+
+        @Override
+        public void onResponse(Call<Meeting> call, Response<Meeting> response) {
+            nextMeeting = response.body();
+            processMeeting(user);
+        }
+
+        @Override
+        public void onFailure(Call<Meeting> call, Throwable t) {
+            toast("网络错误");
+        }
     }
 }
