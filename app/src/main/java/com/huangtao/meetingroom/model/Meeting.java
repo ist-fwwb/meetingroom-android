@@ -4,6 +4,7 @@ import com.huangtao.meetingroom.model.meta.MeetingType;
 import com.huangtao.meetingroom.model.meta.Status;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -26,6 +27,24 @@ public class Meeting implements Serializable {
     MeetingType type;
     Set<String> tags;
     long timestamp;
+    List<ForeignGuest> foreignGuestList;
+    String errorNum;
+
+    public String getErrorNum() {
+        return errorNum;
+    }
+
+    public void setErrorNum(String errorNum) {
+        this.errorNum = errorNum;
+    }
+
+    public List<ForeignGuest> getForeignGuestList() {
+        return foreignGuestList;
+    }
+
+    public void setForeignGuestList(List<ForeignGuest> foreignGuestList) {
+        this.foreignGuestList = foreignGuestList;
+    }
 
     public Map<String, String> getAttendantsName() {
         return attendantsName;
@@ -193,4 +212,7 @@ public class Meeting implements Serializable {
         this.type = type;
     }
 
+    public boolean modifyMeetingSuccessful() {
+        return getErrorNum().equals("200");
+    }
 }

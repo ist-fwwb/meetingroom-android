@@ -111,7 +111,7 @@ public class MainBusyFragment extends MyLazyFragment {
 
         listRefresh.setOnClickListener((v)->{
             listRefresh.setEnabled(false);
-            initList();
+            refreshList();
         });
 
         signinButton.setOnClickListener((v)->{
@@ -160,6 +160,19 @@ public class MainBusyFragment extends MyLazyFragment {
     private void initList(){
         final TextView listRefreshTime = findViewById(R.id.list_refresh_time);
         final ImageView listRefresh = findViewById(R.id.list_refresh);
+        List<Map.Entry<String, String>> attendants = new ArrayList<>(meeting.getAttendantsName().entrySet());
+        attendants.sort((x,y)->{
+            return CommonUtils.compareDate(x.getValue(), y.getValue());
+        });
+        attendantsAdapter.setData(attendants);
+        listRefreshTime.setText("上次更新: " + TimeUtils.millis2String(System.currentTimeMillis()));
+        listRefresh.setEnabled(true);
+        Log.i(TAG, meeting.toString());
+    }
+
+    private void refreshList(){
+        final TextView listRefreshTime = findViewById(R.id.list_refresh_time);
+        final ImageView listRefresh = findViewById(R.id.list_refresh);
         Network.getInstance().queryMeetingById(meeting.getId()).enqueue(new Callback<Meeting>() {
             @Override
             public void onResponse(Call<Meeting> call, Response<Meeting> response) {
@@ -187,7 +200,7 @@ public class MainBusyFragment extends MyLazyFragment {
         refreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
-                initList();
+                refreshList();
                 refreshlayout.finishRefresh(true);//传入false表示刷新失败
             }
         });
@@ -208,20 +221,27 @@ public class MainBusyFragment extends MyLazyFragment {
                 @Override
                 public void onResponse(Call<List<User>> call, Response<List<User>> response) {
                     Log.i(TAG, "获取user信息成功");
-                    String id = response.body().get(0).getId();
+                    User user = response.body().get(0);
+                    String id = user.getId();
                     meeting.getAttendants().put(id, CommonUtils.getTime());
-                    initList();
                     Network.getInstance().modifyMeeting(meeting, meeting.getId()).enqueue(new Callback<Meeting>() {
                         @Override
                         public void onResponse(Call<Meeting> call, Response<Meeting> response) {
-                            Log.i(TAG, "修改会议状态成功");
-                            Log.i(TAG, meeting.toString());
+                            meeting = response.body();
+                            if (!meeting.modifyMeetingSuccessful()){
+                                toast("上传服务器失败，请重试");
+                            }
+                            else{
+                                Log.i(TAG, "修改会议状态成功");
+                                Log.i(TAG, meeting.toString());
+                                toast("欢迎你， " + user.getName());
+                                initList();
+                            }
                         }
 
                         @Override
                         public void onFailure(Call<Meeting> call, Throwable t) {
                             Log.i(TAG, "修改会议状态失败");
-
                         }
                     });
                 }

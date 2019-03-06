@@ -1,16 +1,18 @@
 package com.huangtao.meetingroom.fragment;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Message;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -23,6 +25,7 @@ import com.huangtao.meetingroom.common.Constants;
 import com.huangtao.meetingroom.common.MyLazyFragment;
 import com.huangtao.meetingroom.common.MyRecyclerViewAdapter;
 import com.huangtao.meetingroom.helper.CommonUtils;
+import com.huangtao.meetingroom.model.ForeignGuest;
 import com.huangtao.meetingroom.model.Meeting;
 import com.huangtao.meetingroom.model.User;
 import com.huangtao.meetingroom.model.meta.Status;
@@ -51,6 +54,8 @@ import static android.app.Activity.RESULT_OK;
 public class MainFreeFragment extends MyLazyFragment {
     static MainFreeFragment mainFreeFragment = null;
     private static final String TAG = "MainFreefragment";
+    static final int VERIFY = 1;
+    static final int ADDMEETING = 2;
 
     ProgressDialog progressDialog;
 
@@ -62,6 +67,9 @@ public class MainFreeFragment extends MyLazyFragment {
 
     @BindView(R.id.qrcode)
     ImageView qrcode;
+
+    @BindView(R.id.guest)
+    Button guestButton;
 
     @BindView(R.id.register)
     Button registerButton;
@@ -131,12 +139,38 @@ public class MainFreeFragment extends MyLazyFragment {
                 //getActivity().getSupportFragmentManager().beginTransaction().
                 //        replace(R.id.fragment_layout, new MainBusyFragment(), null).commit();
                 CommonUtils.saveSharedPreference(getActivity(), "NextMeetingId",nextMeeting.getId());
-                prepareFilesBeforeRecognize(nextMeeting);
+                prepareFilesBeforeRecognize(nextMeeting, VERIFY);
             }
         });
 
         registerButton.setOnClickListener((v)->{
             //TODO 预定当天的会议室
+            prepareAllUsersFilesBeforeRecognize();
+        });
+
+        guestButton.setOnClickListener((v) ->{
+            nextMeeting = nextMeeting(meetings);
+            if (nextMeeting == null) {
+                toast("当前时间没有会议");
+            }
+            else {
+                View view = LayoutInflater.from(getActivity()).inflate(R.layout.alert_dialog, null);
+                new AlertDialog.Builder(getActivity()).setTitle("嘉宾验证")
+                        .setView(view)
+                        .setPositiveButton("确认", (dialog, which) -> {
+                            String checkNum = ((EditText)view.findViewById(R.id.checkNum)).getText().toString();
+                            ForeignGuest foreignGuest = checkGuestSuccess(checkNum);
+                            if (foreignGuest != null){
+                                toast("欢迎你, "+foreignGuest.getName());
+                                new FragmentHandler().sendEmptyMessage(0);
+                            }
+                            else {
+                                toast("验证失败，请重试");
+                            }
+                        })
+                        .setNegativeButton("取消", null)
+                        .show();
+            }
         });
 
         qrcode.setOnClickListener((v)->{
@@ -144,6 +178,14 @@ public class MainFreeFragment extends MyLazyFragment {
             dialog.setQrcode(CodeUtils.createImage(Constants.ROOM_ID, 400, 400, null));
             dialog.create().show();
         });
+    }
+
+    private ForeignGuest checkGuestSuccess(String checkNum) {
+        List<ForeignGuest> guests = nextMeeting.getForeignGuestList();
+        for (ForeignGuest foreignGuest : guests){
+            if (foreignGuest.getPhone().equals(checkNum) || foreignGuest.getUUID().equals(checkNum)) return foreignGuest;
+        }
+        return null;
     }
 
     private void initRefreshLayout() {
@@ -199,10 +241,16 @@ public class MainFreeFragment extends MyLazyFragment {
         return null;
     }
 
-    private void prepareFilesBeforeRecognize(Meeting meeting){
+    private void prepareAllUsersFilesBeforeRecognize(){
+        prepareFilesBeforeRecognize(null, ADDMEETING);
+    }
+
+    private void prepareFilesBeforeRecognize(Meeting meeting, int requestCode){
         Log.d(TAG, "prepareFilesBeforeRecognize: start");
-        Map<String ,String> attendants = meeting.getAttendants();
-        List<String> ids = new ArrayList<>(attendants.keySet());
+        List<String> ids = null;
+        if (meeting != null){
+            ids = new ArrayList<>(meeting.getAttendants().keySet());
+        }
         Network.getInstance().queryUser(null, ids, null).enqueue(new Callback<List<User>>() {
             @Override
             public void onResponse(Call<List<User>> call, Response<List<User>> response) {
@@ -214,15 +262,18 @@ public class MainFreeFragment extends MyLazyFragment {
                         final String fileName = user.getFeatureFile();
                         sb.append(fileName); sb.append(' ');
                         File head = new File(Constants.HEAD_DIR + fileName);
+                        Log.d(TAG, "onResponse: " + head.getAbsolutePath());
                         if(!head.exists()) {
+                            Log.d(TAG, "onResponse: head not exit");
                             FileManagement.download(getFragmentActivity().getApplicationContext(),
                                     fileName, Constants.HEAD_DIR);
                         }
                     }
                     CommonUtils.saveSharedPreference(getActivity(), "FaceNames", sb.toString());
-                    new HeadHandler().sendEmptyMessage(0);
+                    progressDialog.dismiss();
+                    //toast("拉取成功");
+                    startActivityForResult(new Intent(getActivity(), RegisterAndRecognizeActivity.class), requestCode);
                 }).run();
-
             }
 
             @Override
@@ -238,7 +289,7 @@ public class MainFreeFragment extends MyLazyFragment {
         public void handleMessage(Message msg) {
             progressDialog.dismiss();
             //toast("拉取成功");
-            startActivityForResult(new Intent(getActivity(), RegisterAndRecognizeActivity.class), 0);
+            startActivityForResult(new Intent(getActivity(), RegisterAndRecognizeActivity.class), VERIFY);
         }
     }
 
@@ -257,15 +308,30 @@ public class MainFreeFragment extends MyLazyFragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode){
+            case VERIFY:
+                verifyCallback(resultCode, data);
+                break;
+            case ADDMEETING:
+                addMeetingCallback(resultCode, data);
+                break;
+        }
+    }
+
+    private void addMeetingCallback(int resultCode, Intent data) {
+
+    }
+
+    private void verifyCallback(int resultCode, Intent data) {
         if (resultCode == RESULT_OK){
-            toast("人脸识别成功");
             String featureFileName = data.getStringExtra("featureFileName");
             Log.i("freeFragment", featureFileName);
             Network.getInstance().queryUser(null, null, featureFileName).enqueue(new Callback<List<User>>() {
                 @Override
                 public void onResponse(Call<List<User>> call, Response<List<User>> response) {
                     Log.i("freeFragment", "获取user信息成功");
-                    String id = response.body().get(0).getId();
+                    User user = response.body().get(0);
+                    String id = user.getId();
                     nextMeeting.getAttendants().put(id, CommonUtils.getTime());
                     //TODO 设置会议状态(取消注释）
                     //nextMeeting.setStatus(Status.Running);
@@ -275,13 +341,20 @@ public class MainFreeFragment extends MyLazyFragment {
                         public void onResponse(Call<Meeting> call, Response<Meeting> response) {
                             Log.i("freeFragment", "修改会议状态成功");
                             Log.i("freeFragment", nextMeeting.toString());
-                            new FragmentHandler().sendEmptyMessage(0);
+                            nextMeeting = response.body();
+                            Log.d(TAG, "onResponse: "+nextMeeting.getTimestamp());
+                            if (!nextMeeting.modifyMeetingSuccessful()){
+                                toast("网络状态有问题请重试");
+                            }
+                            else{
+                                toast("欢迎你, " + user.getName());
+                                new FragmentHandler().sendEmptyMessage(0);
+                            }
                         }
 
                         @Override
                         public void onFailure(Call<Meeting> call, Throwable t) {
                             Log.i("freeFragment", "修改会议状态失败");
-
                         }
                     });
                 }
@@ -295,6 +368,12 @@ public class MainFreeFragment extends MyLazyFragment {
         else {
             toast("人脸识别失败");
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        initList();
     }
 
     private void openDoor() {

@@ -142,6 +142,7 @@
                     android:layout_height="80dp"
                     android:layout_marginLeft="20dp"
                     android:background="@drawable/bg_home_guest"
+                    android:id="@+id/guest"
                     android:text="嘉宾"
                     android:textColor="@color/white"
                     android:textSize="16sp" />

@@ -65,7 +65,7 @@ public interface Api {
     @GET("meeting/{id}")
     Call<Meeting> queryMeetingById(@Path("id") String id);
 
-    @POST("meeting/")
+    @POST("meeting/v2")
     Call<Meeting> appointMeetingroom(@Body Meeting meeting);
 
     @GET("meeting/{id}/attendants")
