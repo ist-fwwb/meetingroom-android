@@ -26,6 +26,8 @@ import java.io.IOException;
 
 import butterknife.BindView;
 
+//TODO 引导配置会议室页面
+
 public class MainActivity extends MyActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 

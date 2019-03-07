@@ -9,7 +9,7 @@ android {
     }
     defaultConfig {
         applicationId "com.huangtao.meetingroom"
-        minSdkVersion 24
+        minSdkVersion 23
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 10
         versionName "1.0"
@@ -163,14 +163,15 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-scalars:2.0.2'
 
     // oss
-    implementation ('com.aliyun.dpa:oss-android-sdk:+'){
-        exclude (module: 'alicloud-android-utdid')
+    implementation('com.aliyun.dpa:oss-android-sdk:+') {
+        exclude(module: 'alicloud-android-utdid')
     }
 
     // qrcode
     implementation 'cn.yipianfengye.android:zxing-library:2.2'
     //SmartRefresh
     implementation 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.0-alpha-20'
+    implementation project(':libguide')
 }
 
 repositories {
