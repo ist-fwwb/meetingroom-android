@@ -158,15 +158,14 @@ public class RegisterAndRecognizeActivity extends AppCompatActivity implements V
 //        });
 //        RecyclerView recyclerShowFaceInfo = findViewById(R.id.recycler_view_person);
         compareResultList = new ArrayList<>();
-        //TODO 取消注释
-//        new Thread(()->{
-//            try {
-//                sleep(10000);
-//                new FinishHandler().sendEmptyMessage(0);
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
-//        }).start();
+        new Thread(()->{
+            try {
+                sleep(10000);
+                new FinishHandler().sendEmptyMessage(0);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }).start();
 //        adapter = new ShowFaceInfoAdapter(compareResultList, this);
 //        recyclerShowFaceInfo.setAdapter(adapter);
 //        DisplayMetrics dm = getResources().getDisplayMetrics();

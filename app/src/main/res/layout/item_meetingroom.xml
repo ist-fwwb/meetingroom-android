@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="120dp"
+    android:background="@color/white">
+
+    <ImageView
+        android:id="@+id/pic"
+        android:layout_width="85dp"
+        android:layout_height="85dp"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="20dp"
+        android:src="@mipmap/pic_meetingroom5302"
+        android:scaleType="centerCrop"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_toRightOf="@id/pic"
+        android:layout_centerVertical="true">
+
+        <TextView
+            android:id="@+id/location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:text="软件学院5302"
+            android:textSize="14sp"
+            android:textColor="@color/douban_gray"
+            android:layout_marginLeft="20dp"/>
+
+        <TextView
+            android:id="@+id/status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:textColor="@color/douban_gray_55_percent"
+            android:layout_marginTop="3dp"
+            android:text="空闲中"
+            android:layout_marginLeft="20dp"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:orientation="horizontal"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="12dp">
+            <ImageView
+                android:id="@+id/air_conditioner"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginLeft="8dp"
+                android:src="@mipmap/ic_air_conditioner"
+                android:visibility="gone"/>
+
+            <ImageView
+                android:id="@+id/blackboard"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_marginLeft="8dp"
+                android:src="@mipmap/ic_blackboard"
+                android:visibility="gone"/>
+
+            <ImageView
+                android:id="@+id/desk"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginLeft="8dp"
+                android:src="@mipmap/ic_desk"
+                android:visibility="gone"/>
+
+            <ImageView
+                android:id="@+id/projector"
+                android:layout_width="20dp"
+                android:layout_height="18dp"
+                android:layout_marginLeft="8dp"
+                android:src="@mipmap/ic_projector"
+                android:visibility="gone"/>
+
+            <ImageView
+                android:id="@+id/power"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_marginLeft="8dp"
+                android:src="@mipmap/ic_power"
+                android:visibility="gone"/>
+        </LinearLayout>
+
+    </LinearLayout>
+</RelativeLayout>

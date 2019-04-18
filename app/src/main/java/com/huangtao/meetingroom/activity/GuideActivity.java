@@ -5,16 +5,21 @@ import android.graphics.Color;
 import com.huangtao.libguide.BaseGuideActivity;
 import com.huangtao.libguide.BezierBannerDot;
 import com.huangtao.meetingroom.R;
-import com.huangtao.meetingroom.fragment.guide1;
-import com.huangtao.meetingroom.fragment.guide2;
-import com.huangtao.meetingroom.fragment.guide3;
+import com.huangtao.meetingroom.fragment.GuideFirstFragment;
+import com.huangtao.meetingroom.fragment.GuideSecondFragment;
+import com.huangtao.meetingroom.fragment.GuideThirdFragment;
 
 public class GuideActivity extends BaseGuideActivity {
     @Override
     protected void initData() {
-        addFragment(guide1.newInstance("1", "1"));
-        addFragment(guide2.newInstance("2", "2"));
-        addFragment(guide3.newInstance("3", "3"));
+        GuideFirstFragment fragment1 = new GuideFirstFragment();
+        fragment1.setViewPager(viewPager);
+        GuideSecondFragment fragment2 = new GuideSecondFragment();
+        fragment2.setViewPager(viewPager);
+        GuideThirdFragment fragment3 = new GuideThirdFragment();
+        addFragment(fragment1);
+        addFragment(fragment2);
+        addFragment(fragment3);
     }
 
     @Override

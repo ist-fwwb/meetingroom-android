@@ -18,8 +18,8 @@ import android.widget.FrameLayout;
 import com.huangtao.meetingroom.R;
 import com.huangtao.meetingroom.common.Constants;
 import com.huangtao.meetingroom.common.MyActivity;
+import com.huangtao.meetingroom.fragment.GuideSecondFragment;
 import com.huangtao.meetingroom.fragment.MainFreeFragment;
-import com.huangtao.meetingroom.fragment.MeetingRoomListFragment;
 import com.huangtao.meetingroom.helper.CommonUtils;
 
 import java.io.IOException;
@@ -91,24 +91,13 @@ public class MainActivity extends MyActivity
                 CommonUtils.closeRelay();
             }
         });
-
-        if (Constants.ROOM_ID.isEmpty()) switchFragment(MeetingRoomListFragment.newInstance());
-        else switchFragment(MainFreeFragment.getInstance());
+        //getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.fragment_layout, MainFreeFragment.getInstance(), null);
+        switchFragment(MainFreeFragment.getInstance());
     }
 
     @Override
     protected void initData() {
 
-    }
-
-    @Override
-    public void onBackPressed() {
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
@@ -120,7 +109,7 @@ public class MainActivity extends MyActivity
         if (id == R.id.nav_bluetooth) {
             startActivity(BluetoothActivity.class);
         } else if (id == R.id.nav_meetingRoom) {
-            switchFragment(MeetingRoomListFragment.newInstance());
+            getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.main_container, new GuideSecondFragment(), null);
         } else if (id == R.id.nav_slideshow) {
 
         } else if (id == R.id.nav_manage) {
@@ -139,9 +128,10 @@ public class MainActivity extends MyActivity
     private void switchFragment(Fragment fragment){
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.add(R.id.fragment_layout, fragment);
+        transaction.add(R.id.fragment_layout, fragment, "mainFree");
         transaction.commit();
     }
+
 
     @Override
     protected void onDestroy() {
@@ -154,5 +144,16 @@ public class MainActivity extends MyActivity
                 e.printStackTrace();
             }
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    public void onBackPressed() {
+        //禁用返回键
+        //super.onBackPressed();
     }
 }

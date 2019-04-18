@@ -31,4 +31,5 @@ public class Constants {
 
     //meetingRoom id
     public static String ROOM_ID = "5c4e9bdac9e77c00133acdd6";
+    public static String ROOM_NAME = "";
 }

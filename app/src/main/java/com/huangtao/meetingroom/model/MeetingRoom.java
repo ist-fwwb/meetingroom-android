@@ -4,6 +4,7 @@ import com.huangtao.meetingroom.model.meta.MeetingRoomUtils;
 import com.huangtao.meetingroom.model.meta.Size;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Set;
 
 public class MeetingRoom implements Serializable {
@@ -11,6 +12,8 @@ public class MeetingRoom implements Serializable {
     Set<MeetingRoomUtils> utils;
     Size size;
     String location;
+    String deviceId;
+    List<String> images;
 
     public String getId() {
         return id;
@@ -42,5 +45,21 @@ public class MeetingRoom implements Serializable {
 
     public void setLocation(String location) {
         this.location = location;
+    }
+
+    public String getDeviceId() {
+        return deviceId;
+    }
+
+    public void setDeviceId(String deviceId) {
+        this.deviceId = deviceId;
+    }
+
+    public List<String> getImages() {
+        return images;
+    }
+
+    public void setImages(List<String> images) {
+        this.images = images;
     }
 }

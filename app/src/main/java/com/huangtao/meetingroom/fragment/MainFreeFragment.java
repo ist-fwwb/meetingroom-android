@@ -78,6 +78,9 @@ public class MainFreeFragment extends MyLazyFragment {
     @BindView(R.id.refreshLayout)
     SmartRefreshLayout refreshLayout;
 
+    @BindView(R.id.meetingroom_name)
+    TextView meetingroom_name;
+
     List<Meeting> meetings;
     Meeting nextMeeting;
     MyRecyclerViewAdapter myRecyclerViewAdapter;
@@ -108,7 +111,7 @@ public class MainFreeFragment extends MyLazyFragment {
         //View header = LayoutInflater.from(getFragmentActivity()).inflate(R.layout.item_main_free_header, null, false);
         progressDialog = new ProgressDialog(getActivity());
         progressDialog.setMessage("正在加载中……");
-
+        meetingroom_name.setText(Constants.ROOM_NAME);
         //recyclerView.addHeader(header);
     }
 
@@ -199,6 +202,7 @@ public class MainFreeFragment extends MyLazyFragment {
         meeting.setEndTime(timeInterval.getEnd());
         meeting.setNeedSignIn(false);
         meeting.setType(MeetingType.COMMON);
+        meeting.setStatus(Status.Pending);
         return meeting;
     }
 

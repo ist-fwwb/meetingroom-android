@@ -14,6 +14,7 @@ public class GuideFragmentPageAdapter extends FragmentPagerAdapter {
         this.fragments = fragments;
     }
 
+
     @Override
     public Fragment getItem(int i) {
         return fragments.get(i);

@@ -102,6 +102,7 @@ public class MainBusyFragment extends MyLazyFragment {
         //View header = LayoutInflater.from(getFragmentActivity()).inflate(R.layout.item_main_busy_header, null, false);
         progressDialog = new ProgressDialog(getActivity());
         progressDialog.setMessage("正在加载中……");
+        meetingroom_name.setText(Constants.ROOM_NAME);
         if (!meeting.isNeedSignIn()) {
             signinButton.setVisibility(View.GONE);
             linearLayout.setVisibility(View.GONE);
@@ -249,6 +250,9 @@ public class MainBusyFragment extends MyLazyFragment {
                                 Log.i(TAG, "修改会议状态成功");
                                 Log.i(TAG, meeting.toString());
                                 toast("欢迎你， " + user.getName());
+                                if (meeting.isNeedSignIn()){
+                                    openDoor();
+                                }
                                 initList();
                             }
                         }
@@ -298,6 +302,24 @@ public class MainBusyFragment extends MyLazyFragment {
             return true;
         }
         return false;
+    }
+
+    private void openDoor() {
+        if(Constants.bluetoothSocket == null){
+            toast("蓝牙未连接");
+        } else if(!Constants.bluetoothSocket.isConnected()){
+            CommonUtils.connectRelay();
+        }
+        CommonUtils.openRelay();
+        new Thread(()->{
+            //延时30秒关门
+            try {
+                Thread.sleep(30000);
+                closeDoor();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }).start();
     }
 
 }

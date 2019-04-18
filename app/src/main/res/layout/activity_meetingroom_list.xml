@@ -4,18 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.BluetoothActivity">
+    android:orientation="vertical">
+
     <TextView
-        android:id="@+id/textView"
-        android:text="请选择对应的蓝牙设备"
         android:layout_width="wrap_content"
+        android:id="@+id/textView"
+        android:text="请选择对应的会议室"
         android:layout_height="wrap_content" />
     <android.support.v7.widget.RecyclerView
         android:id="@+id/list"
-        android:layout_below="@+id/textView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_below="@id/textView">
 
     </android.support.v7.widget.RecyclerView>
-
 </RelativeLayout>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="BezierBannerDot">
+        <attr format="color" name="selectedColor"/>
+        <attr format="color" name="unSelectedColor"/>
+        <attr format="dimension" name="selectedRaduis"/>
+        <attr format="dimension" name="unSelectedRaduis"/>
+        <attr format="dimension" name="spacing"/>
+    </declare-styleable>
+    <string name="app_name">libguide</string>
+</resources>

@@ -25,7 +25,7 @@ public abstract class BaseGuideActivity extends AppCompatActivity {
         initView();
     }
 
-    private ViewPager viewPager;
+    protected ViewPager viewPager;
     private GuidePageAdapter mPageAdapter;
     private List<View> mData = new ArrayList<>();
     private BezierBannerDot indicator;
